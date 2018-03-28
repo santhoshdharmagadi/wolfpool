@@ -22,6 +22,7 @@ exports.createUser = function(req, res){
 
       //use schema.create to insert data into the db
       User.create(userData, function (err, user) {
+		  console.log("hi");
         if (err) {
           return res.render('info_page',{data:'Your email is already registered. You can login ',name:'here', link:'login_page'});
           console.log(err);
@@ -32,7 +33,9 @@ exports.createUser = function(req, res){
           //var websitehost = 'https://wpool-dev.us-east-1.elasticbeanstalk.com';
 
           // Configure the api
-          var mailjet = require('node-mailjet').connect(process.env.MJ_PUBLIC_KEY, process.env.MJ_PRIVATE_KEY)
+		  //console.log(process.env);
+			//console.log(process.env.MJ_PRIVATE_KEY);
+          var mailjet = require('node-mailjet').connect("d415787cc9c84f7c03bf8a8285df7d24", "e527f3a39fe924067ece702fa9b1f963")
 
           var request = mailjet
               .post("send")
