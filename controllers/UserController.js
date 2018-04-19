@@ -14,7 +14,7 @@ exports.createUser = function(req, res){
         password: req.body.password,
         phone: null,
         gender: null,
-        verified: false,
+        verified: true,
         verification_hash: verfhash,
         university: null,
         address: null
