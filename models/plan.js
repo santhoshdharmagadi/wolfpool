@@ -24,7 +24,8 @@ var planSchema = new mongoose.Schema({
   src_distance: Number,
   dest_distance: Number,
   vacancy: Number,
-  emails: [String]
+  emails: [String],
+  ratings: [Number]
 });
 
 module.exports = mongoose.model('Plan', planSchema);

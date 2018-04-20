@@ -65,6 +65,11 @@ module.exports = function(app) {
             });
         }
     });
+  app.get('/rate/:id', function(req, res){
+    if(req.session && req.session.userId){
+      res.render('rate', {id: req.params.id});
+    }
+  });
 
   app.get('/register_page', function(req, res) {
     res.render('register');
@@ -74,7 +79,9 @@ module.exports = function(app) {
   app.post('/savePlan', PlanController.savePlan);
   app.post('/searchPlan', PlanController.searchPlan);
   app.post('/joinPlan', PlanController.joinPlan);
+  app.post('/rate_users', PlanController.rate_users);
   app.get('/get_plans', PlanController.getPlans);
+  app.get('/get_trip_users/:id', PlanController.get_trip_users);
 
   // Routes related to User
   app.get('/verify_user/:email/:verfhash', UserController.verifyUser);

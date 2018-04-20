@@ -14,6 +14,7 @@
 					<th>Number of people</th>
 					<th>Co-passengers</th>
 					<th>Vacancy</th>
+					<th>Rating</th>
 				 </tr>
 			</thead>
 	</table>
@@ -31,10 +32,11 @@ $(document).ready(function() {
 				if ($.trim(json_data)){
 					//$('#resultTable tbody> tr').remove();
 					var len = json_data.length;
-
+					//alert(len);
 					for(var i=0; i<len; i++){
 						item = json_data[i];
 						var date_str = item.date.split("T");
+						
 						var tr_str = "<tr>" +
 						"<td align='center' hidden='true'>" + item._id + "</td>" +
 						"<td align='center'>" + item.source_id + "</td>" +
@@ -44,6 +46,7 @@ $(document).ready(function() {
 						"<td align='center'>" + item.no_of_people + "</td>" +
 						"<td align='center'>" + item.emails + "</td>" +
 						"<td align='center'>" + item.vacancy + "</td>" +
+						"<td align='center'><a href='/rate/" + item._id + "'>" + item.ratings + "</a></td>" + 
 						"</tr>";
 						$("#resultTable").append(tr_str);
 					}
