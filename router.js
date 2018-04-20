@@ -53,6 +53,19 @@ module.exports = function(app) {
     }
   });
 
+
+    app.get('/search', function(req, res) {
+        if (req.session && req.session.userId) {
+            res.render('search');
+        } else {
+            res.render('info_page', {
+                data: 'You must be logged in to view this page. Back to ',
+                name: 'login',
+                link: 'login_page'
+            });
+        }
+    });
+
   app.get('/register_page', function(req, res) {
     res.render('register');
   });
