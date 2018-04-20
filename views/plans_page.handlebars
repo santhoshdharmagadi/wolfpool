@@ -15,6 +15,7 @@
 					<th>Co-passengers</th>
 					<th>Vacancy</th>
 					<th>Rating</th>
+					<th>Feedback</th>
 				 </tr>
 			</thead>
 	</table>
@@ -46,7 +47,8 @@ $(document).ready(function() {
 						"<td align='center'>" + item.no_of_people + "</td>" +
 						"<td align='center'>" + item.emails + "</td>" +
 						"<td align='center'>" + item.vacancy + "</td>" +
-						"<td align='center'><a href='/rate/" + item._id + "'>" + item.ratings + "</a></td>" + 
+						"<td align='center'><a href='/rate/" + item._id + "'> Provide Rating </a></td>" +
+						"<td align='center'><a href='/feedback/" + item._id + "'> Provide Feedback </a></td>" + 
 						"</tr>";
 						$("#resultTable").append(tr_str);
 					}
