@@ -1,0 +1,47 @@
+<div class="page-header">
+    <h2>Bum Chick Bum!!</h2>
+    <h3>{{id}}</h3>
+    <form action="/rate_users" , method="POST" id="rating_form">
+
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "GET",
+            url: "/get_trip_users/{{id}}",
+            async: true,
+            success: function (json_data) {
+                if ($.trim(json_data)) {
+                    //$('#resultTable tbody> tr').remove();
+                    var len = json_data.length;
+                    var test = "<input type='hidden' name='id' value='{{id}}' >";
+
+                    $('#rating_form').append(test);
+                    for (var i = 0; i < json_data.plan.emails.length; i++) {
+                        if (json_data.plan.emails[i] != json_data.myEmail) {
+                            var email = json_data.plan.emails[i] + ": <input type='text' name='"
+                                + json_data.plan.emails[i] + "' value='0' /><br>";
+                            $('#rating_form').append(email);
+                        }
+
+                    }
+                    $('#rating_form').append('<input type="submit" value="Submit">');
+
+
+                    for (var i = 0; i < len; i++) {
+                        item = json_data[i];
+                        var date_str = item.date.split("T");
+
+                    }
+                }
+            }, error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+            }
+        });
+
+    });
+</script>

@@ -1,6 +1,7 @@
 var geolib = require('geolib');
 var haversine = require('haversine-distance');
 var Plan = require('../models/plan');
+var Rating = require('../models/rating');
 
 var checker = 0;
 
@@ -48,6 +49,43 @@ exports.getPlans = function(request, response) {
     "emails": request.session.userEmail
   }, function(err, planslist) {
     response.send(planslist);
+  });
+};
+
+exports.get_trip_users = function(request, response){
+  Plan.findOne({
+    "_id": request.params.id
+  }, function(err, plan){
+    var record = {
+      "plan": plan,
+      "myEmail": request.session.userEmail
+    };
+    // console.log(record);
+    response.send(record);
+  });
+  
+};
+
+exports.rate_users = function(request, response){
+  var rating = [];
+  
+  for(var email in request.body){
+    if(email != 'id'){
+      rating.push({
+        "trip_id": request.body.id,
+        "source_email": request.session.userEmail,
+        "destination_email": email,
+        "rating": Number(request.body[email])
+      });
+    }
+  }
+
+  Rating.create(rating, function(err, result){
+    if(err){
+      response.status(400).send(err);
+    }else{
+      response.send(result);
+    }
   });
 };
 
