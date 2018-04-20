@@ -7,6 +7,7 @@ var Feedback = require('../models/feedback');
 var checker = 0;
 
 exports.savePlan = function(request, response) {
+  console.log(request.body);
   if (checker != 1) {
     var planModel = require('../models/plan')
     var planData = new planModel({
@@ -20,18 +21,18 @@ exports.savePlan = function(request, response) {
       time: request.body.time,
       no_of_people: request.body.no_of_people,
       vacancy: 6 - request.body.no_of_people,
-      emails: [request.session.userEmail]
+      emails: [request.session.userEmail],
+      gender_preference: request.body.gender_preference,
+      luggage: request.body.luggage,
+      minimum_rating: request.body.minimum_rating,
+      maximum_coPassengers: request.body.maximum_coPassengers,
     });
     planData.save()
       .then(item => {
-        response.render('info_page', {
-          data: "Plan created. Back to ",
-          name: 'home',
-          link: 'home'
-        });
+        response.render('plans_page');
       })
       .catch(err => {
-        console.log(err)
+        console.log(err);
         response.render('info_page', {
           data: "Unable to create plan."
         });
