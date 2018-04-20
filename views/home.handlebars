@@ -54,24 +54,24 @@
 
                 <div class="form-group">
                     <label for="people">Maximum number of people</label><br>
-                    <input type="radio" name="people" value="2" checked> two<br>
-                    <input type="radio" name="people" value="4"> four<br>
-                    <input type="radio" name="people" value="6"> six
+                    <input type="radio" name="maximum_coPassengers" value="2" checked> two<br>
+                    <input type="radio" name="maximum_coPassengers" value="4"> four<br>
+                    <input type="radio" name="maximum_coPassengers" value="6"> six
                 </div>
 
                 <div class="form-group">
                     <label for="rating">Minimum rating expected</label><br>
-                    <input type="radio" name="rating" value="1" checked> One<br>
-                    <input type="radio" name="rating" value="2" checked> Two<br>
-                    <input type="radio" name="rating" value="3" checked> Three<br>
-                    <input type="radio" name="rating" value="4" checked> Four<br>
-                    <input type="radio" name="rating" value="5" checked> Five<br>
+                    <input type="radio" name="minimum_rating" value="1" checked> One<br>
+                    <input type="radio" name="minimum_rating" value="2" checked> Two<br>
+                    <input type="radio" name="minimum_rating" value="3" checked> Three<br>
+                    <input type="radio" name="minimum_rating" value="4" checked> Four<br>
+                    <input type="radio" name="minimum_rating" value="5" checked> Five<br>
                 </div>
             </div>
 
 			<div class="form-group">
 				<button type="button" onclick="return getSimilarPlans()" class="btn btn-primary" id="similar_btn">View Similar Plans</button>
-				<button type="submit" onclick="return !!(confirm('Are you sure you want to create a new plan?'));" class="btn btn-danger" id="create_btn">Create a new Plan</button>
+				<button id="create-plan" type="submit" class="btn btn-danger">Create a new Plan</button>
 			</div>
 
 			<fieldset class="details_src" hidden="true">
@@ -155,6 +155,8 @@
 				return false;
 			}
 		});
+
+		$('#create-plan').hide();
 
 		$('#create_btn').hide();
 
@@ -343,6 +345,12 @@
         }
     }
 
+    function createPlan() {
+	    $.ajax({
+
+        })
+    }
+
 	function joinPlan() {
 
 		var plans = document.getElementsByName("similar_plans");
@@ -382,7 +390,7 @@
 	}
 
 	function getSimilarPlans() {
-
+	    console.log($("#mainDetailsForm").serialize());
 		if (!$("#mainDetailsForm").valid())
 			return false;
 		$('#create_btn').hide();
@@ -450,8 +458,8 @@
 					});
 				} else {
 					$('#resultTable tbody> tr').remove();
-					alert("No results found. Please create a plan.");
 					$('#create_btn').show();
+                    $('#create-plan').show();
 					$('#resultsDiv').hide();
 					console.log("Empty JSON data received from PlanController");
 				}
