@@ -2,6 +2,7 @@ var geolib = require('geolib');
 var haversine = require('haversine-distance');
 var Plan = require('../models/plan');
 var Rating = require('../models/rating');
+var Feedback = require('../models/feedback');
 
 var checker = 0;
 
@@ -44,7 +45,6 @@ exports.savePlan = function(request, response) {
 
 
 exports.getPlans = function(request, response) {
-
   Plan.find({
     "emails": request.session.userEmail
   }, function(err, planslist) {
@@ -81,6 +81,29 @@ exports.rate_users = function(request, response){
   }
 
   Rating.create(rating, function(err, result){
+    if(err){
+      response.status(400).send(err);
+    }else{
+      response.send(result);
+    }
+  });
+};
+
+exports.add_feedback = function(request, response){
+  var feedback = [];
+  
+  for(var email in request.body){
+    if(email != 'id'){
+      feedback.push({
+        "trip_id": request.body.id,
+        "source_email": request.session.userEmail,
+        "destination_email": email,
+        "feedback": request.body[email]
+      });
+    }
+  }
+
+  Feedback.create(feedback, function(err, result){
     if(err){
       response.status(400).send(err);
     }else{

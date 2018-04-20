@@ -71,6 +71,12 @@ module.exports = function(app) {
     }
   });
 
+  app.get('/feedback/:id', function(req, res){
+    if(req.session && req.session.userId){
+      res.render('feedback', {id: req.params.id});
+    }
+  });
+
   app.get('/register_page', function(req, res) {
     res.render('register');
   });
@@ -80,8 +86,10 @@ module.exports = function(app) {
   app.post('/searchPlan', PlanController.searchPlan);
   app.post('/joinPlan', PlanController.joinPlan);
   app.post('/rate_users', PlanController.rate_users);
+  app.post('/add_feedback', PlanController.add_feedback);
   app.get('/get_plans', PlanController.getPlans);
   app.get('/get_trip_users/:id', PlanController.get_trip_users);
+  
 
   // Routes related to User
   app.get('/verify_user/:email/:verfhash', UserController.verifyUser);
