@@ -118,7 +118,6 @@ exports.deletePlan = function(request, response){
   if(request.session && request.session.userEmail){
     Plan.findById(request.params.id, function(err, plan){
       if(err){
-        console.log("Here" + err);
         response.status(400).send(err);
       }else{
         var details = plan.people_per_email.filter(function(el){
