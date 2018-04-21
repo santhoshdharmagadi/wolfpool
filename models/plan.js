@@ -25,11 +25,14 @@ var planSchema = new mongoose.Schema({
   dest_distance: Number,
   vacancy: Number,
   emails: [String],
-  ratings: [Number],
     gender_preference: Number,
     luggage: Number,
     minimum_rating: Number,
     maximum_coPassengers: Number,
+  people_per_email:  [{
+    email: String,
+    passengers: Number
+ }]
 });
 
 module.exports = mongoose.model('Plan', planSchema);

@@ -95,7 +95,7 @@ module.exports = function(app) {
   app.post('/add_feedback', PlanController.add_feedback);
   app.get('/get_plans', PlanController.getPlans);
   app.get('/get_trip_users/:id', PlanController.get_trip_users);
-  
+  app.get('/delete/:id', PlanController.deletePlan);
 
   // Routes related to User
   app.get('/verify_user/:email/:verfhash', UserController.verifyUser);
