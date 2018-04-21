@@ -6,6 +6,24 @@ var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
 var expressValidator = require('express-validator');
 var geolib = require('geolib');
+var cors = require('cors');
+app.use(cors());
+var Uber = require('node-uber');
+
+var uber = new Uber({
+    client_id: 'IO8DrxU4a09RW9f_1_sWAvH1QSSvgjeu',
+    client_secret: 'uvspz0J3JtbZj0hcDOn4GGWdHsdxSPSj53ruWDVQ',
+    server_token: '3jAnZxvwYgZhKENLLQOLi_G1pxBHnBGtQfnoz-Wr',
+    redirect_uri: 'MY_REDIRECT_URI',
+    name: 'wolfpool',
+    language: 'en_US', // optional, defaults to en_US
+    sandbox: true, // optional, defaults to false
+});
+
+app.get('/', function(request, response) {
+    var url = uber.getAuthorizeUrl(['history','profile', 'request', 'places']);
+    response.redirect(url);
+});
 
 // Database code
 mongoose.connect('mongodb://152.46.18.168:27017/wolfpool');
