@@ -20,10 +20,6 @@ var uber = new Uber({
     sandbox: true, // optional, defaults to false
 });
 
-app.get('/', function(request, response) {
-    var url = uber.getAuthorizeUrl(['history','profile', 'request', 'places']);
-    response.redirect(url);
-});
 
 // Database code
 mongoose.connect('mongodb://152.46.18.168:27017/wolfpool');
