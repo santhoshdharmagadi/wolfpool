@@ -26,6 +26,7 @@ exports.savePlan = function(request, response) {
       luggage: request.body.luggage,
       minimum_rating: request.body.minimum_rating,
       maximum_coPassengers: request.body.maximum_coPassengers,
+      people_per_email: [{"email": request.session.userEmail, "passengers": Number(request.body.no_of_people)}],
     });
     planData.save()
       .then(item => {
@@ -113,6 +114,49 @@ exports.add_feedback = function(request, response){
   });
 };
 
+exports.deletePlan = function(request, response){
+  if(request.session && request.session.userEmail){
+    Plan.findById(request.params.id, function(err, plan){
+      if(err){
+        response.status(400).send(err);
+      }else{
+        var details = plan.people_per_email.filter(function(el){
+          return el.email == request.session.userEmail;
+        });
+        plan.no_of_people = plan.no_of_people - details[0].passengers;
+        plan.vacancy = 6 - plan.no_of_people; 
+        plan.people_per_email = plan.people_per_email.filter(function(el){
+          return el.email != request.session.userEmail;
+        });
+        plan.emails = plan.emails.filter(function(el){
+          return el != request.session.userEmail;
+        })
+
+        if(plan.emails.length == 0){
+          Plan.findByIdAndRemove(plan._id, (err, plan)=>{
+            if(err){
+              response.status(400).send(err);
+            }else{
+              response.send("Empty Plan! Hence, Deleted!");
+            }
+          });
+        }else{
+          plan.save(function(err){
+            if(err){
+              response.status(400).send(err);
+            }else{
+              
+              response.send("Plan Saved!");
+            }
+          });
+        }
+        
+        
+      }
+    });
+  }
+}
+
 exports.joinPlan = function(request, response) {
 
   var planId = request.body.selectedPlan;
@@ -123,6 +167,7 @@ exports.joinPlan = function(request, response) {
       response.status(500).send("The plan you selected got full. Please search again.");
     } else {
       plan.emails.push(request.session.userEmail);
+      plan.people_per_email.push({"email": request.session.userEmail, "passengers": numberOfPeople});
       plan.no_of_people = +plan.no_of_people + +numberOfPeople;
       plan.vacancy = +plan.vacancy - +numberOfPeople;
       plan.save();

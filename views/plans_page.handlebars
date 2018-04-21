@@ -16,6 +16,7 @@
 					<th>Vacancy</th>
 					<th>Rating</th>
 					<th>Feedback</th>
+					<th>Delete</th>
 				 </tr>
 			    </thead>
 	        </table>
@@ -50,6 +51,7 @@ $(document).ready(function() {
 						"<td align='center'><a href='/rate/" + item._id + "'> Provide Rating </a></td>" +
 						"<td align='center'><a href='/feedback/" + item._id + "'> Provide Feedback </a></td>" + 
 						"<td align='center'><a href='/price_estimate/" + item._id + "'>Get Price Estimate</a></td>" +
+						"<td align='center'><a href='/delete/" + item._id + "'> Delete Plan </a></td>" + 
 						"</tr>";
 						$("#resultTable").append(tr_str);
 					}
