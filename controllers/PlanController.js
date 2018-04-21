@@ -149,8 +149,6 @@ exports.deletePlan = function(request, response){
             }
           });
         }
-        
-        
       }
     });
   }
