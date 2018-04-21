@@ -135,18 +135,17 @@ exports.deletePlan = function(request, response){
         if(plan.emails.length == 0){
           Plan.findByIdAndRemove(plan._id, (err, plan)=>{
             if(err){
-              response.status(400).send(err);
+              response.render('404');
             }else{
-              response.send("Empty Plan! Hence, Deleted!");
+              response.render('plans_page');
             }
           });
         }else{
           plan.save(function(err){
             if(err){
-              response.status(400).send(err);
+              response.render('404');
             }else{
-              
-              response.send("Plan Saved!");
+              response.render('plans_page');
             }
           });
         }
