@@ -1,0 +1,20 @@
+<div style="margin-top: 150px;">Just checking</div>
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            type : "GET",
+            url: "https://api.uber.com/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ",
+            async: true,
+            headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Credentials': true},
+            success: function(json_data){
+                console.log(json_data);
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+            }
+        });
+
+    });
+</script>

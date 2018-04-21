@@ -77,6 +77,12 @@ module.exports = function(app) {
     }
   });
 
+    app.get('/price_estimate/:id', function(req, res){
+        if(req.session && req.session.userId){
+            res.render('price_estimate', {id: req.params.id});
+        }
+    });
+
   app.get('/register_page', function(req, res) {
     res.render('register');
   });
