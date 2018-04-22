@@ -1,6 +1,20 @@
 <div style="margin-top: 200px;" class="row">
     <input type="text" id="pricesData" value="{{resp}}">
     <div class=col-lg-12 col-sm-12 id=result >
+
+        <table style="margin-top: 20px;" id="tripEstimate" class="table table-striped table-bordered table-dark table-condensed table-hover">
+            <thead>
+            <tr>
+                <th>Source Address</th>
+                <th>Destination Address</th>
+                <th>Date (YYYY-MM-DD)</th>
+                <th>Time (24 hour format)</th>
+                <th>Number of people</th>
+                <th>Vacancy</th>
+            </tr>
+            </thead>
+        </table>
+
         <table id="estimateTable" class="table table-striped table-bordered table-dark table-condensed table-hover">
             <thead>
             <tr>
@@ -9,6 +23,7 @@
                 <th>Type of Currency</th>
                 <th>Minimum Amount</th>
                 <th>Maximum Amount</th>
+                <th>Cost per each rider</th>
                 <th>Duration</th>
                 <th>Distance</th>
             </tr>
@@ -21,14 +36,28 @@
     $(document).ready(function() {
         $('#pricesData').hide();
         var prices = $('#pricesData')[0].defaultValue;
-        var pricesJson = JSON.parse(prices).prices;
+        console.log(JSON.parse(prices));
+        var dataJson = JSON.parse(prices);
+        var pricesJson = JSON.parse(prices).data.prices;
+
+        var str = "<tr>" +
+                "<td align='center'>" + dataJson.item.source_id + "</td>" +
+                "<td align='center'>" + dataJson.item.destination_id + "</td>" +
+                "<td align='center'>" + dataJson.item.date.substring(0, 10) + "</td>" +
+                "<td align='center'>" + dataJson.item.time + "</td>" +
+                "<td align='center'>" + dataJson.item.no_of_people + "</td>" +
+                "<td align='center'>" + dataJson.item.vacancy + "</td>" +
+                "</tr>";
+        $("#tripEstimate").append(str);
 
         for(var i=0; i<pricesJson.length; i++) {
             var item = pricesJson[i];
+            var average_price = (item.low_estimate + item.high_estimate)/(2*dataJson.item.no_of_people);
             var tr_str = "<tr>" +
                     "<td align='center'>" + item.localized_display_name + "</td>" +
                     "<td align='center'>" + item.currency_code + "</td>" +
                     "<td align='center'>" + item.low_estimate + "</td>" +
+                    "<td align='center'>" + average_price + "</td>" +
                     "<td align='center'>" + item.high_estimate + "</td>" +
                     "<td align='center'>" + item.duration + "</td>" +
                     "<td align='center'>" + item.distance + "</td>" +
