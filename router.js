@@ -178,7 +178,7 @@ module.exports = function(app) {
   app.get('/profile_page', UserController.getProfile);
 
 // routes related to chat
-  app.post('/add_chat/:trip_id', PlanController.tripChat);
+//  app.post('/add_chat/:trip_id', PlanController.tripChat);
   app.post('/addChat/', PlanController.addMessage);
   app.post('/Chat_Room/:trip_id', PlanController.tripChat);
 };
