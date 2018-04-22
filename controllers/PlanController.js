@@ -361,7 +361,7 @@ exports.getEstimate = function(request, response) {
             });
         }).then(function(resp) {
             console.log(JSON.parse(resp));
-            response.render('price_estimate', {res: JSON.parse(resp)});
+            response.render('price_estimate', {resp: JSON.parse(resp)});
         });
     });
 };

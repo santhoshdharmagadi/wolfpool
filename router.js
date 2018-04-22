@@ -104,7 +104,7 @@ module.exports = function(app) {
     //         res.render('price_estimate', {id: req.params.id});
     //     }
     // });
-  app.post('/register_page', function(req, res) {
+  app.get('/register_page', function(req, res) {
     res.render('register');
   });
     //
