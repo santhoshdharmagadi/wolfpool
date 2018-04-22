@@ -147,7 +147,7 @@ module.exports = function(app) {
   app.get('/delete/:id', PlanController.deletePlan);
   app.get('/edit/:id', PlanController.editPlan);
   app.get('/get_plan/:id', PlanController.get_plan);
-  app.post('/price_estimate/', PlanController.getEstimate);
+  app.get('/price_estimate/:id', PlanController.getEstimate);
 
   // Routes related to User
   app.get('/verify_user/:email/:verfhash', UserController.verifyUser);

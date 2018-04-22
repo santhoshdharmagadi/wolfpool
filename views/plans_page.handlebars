@@ -54,16 +54,17 @@ $(document).ready(function() {
 						"<td align='center'>" + item.vacancy + "</td>" +
 						"<td align='center'><a href='/rate/" + item._id + "'> Provide Rating </a></td>" +
 						"<td align='center'><a href='/feedback/" + item._id + "'> Provide Feedback </a></td>" +
-                                "<td align='center'>" +
-                                // "<form role='form' " + "action='/price_estimate/'" + item._id +"name='price-estimate-form' method='GET' id='price'>" +
-                                "<form role='form' action='/price_estimate' name='price-estimate-form' method='POST' id='price'>" +
+                                // "<td align='center'>" +
+                                // "<form role='form' " + "action='/price_estimate/?id='" + item._id +"name='price-estimate-form' method='GET' id='price'>" +
+                                // "<form role='form' action='/price_estimate' name='price-estimate-form' method='POST' id='price'>" +
                                 // "<div class='form-group'>" +
-                                // "<button type='button' onclick='return getPrice(item)' class='btn btn-primary' id='get_estimate'>Get Estimate</button>"
-                                "<button type='submit' class='btn btn-primary' id='get_price'>Get Price Estimate</button>" +
+                                // "<button type='button' onclick='return getPrice(item)' class='btn btn-primary' id='get_estimate'>Get Estimate</button>"+
+                                // "<button type='submit' class='btn btn-primary' id='get_price'>Get Price Estimate</button>" +
                                 // + "</div>" +
-                                "</form>" +
-                                + "</td>" +
+                                // "</form>" +
+                                // + "</td>" +
                         // "<td align='center'><a href='/price_estimating/" + item._id + "'>Price estimate</a></td>" +
+						"<td align='center'><a href='/price_estimate/" + item._id + "'>Estimate Plan</a></td>" +
 						"<td align='center'><a href='/edit/" + item._id + "'>Edit Plan</a></td>" +
 						"<td align='center'><a href='/delete/" + item._id + "'> Delete Plan </a></td>" +
 						"</tr>";
@@ -94,7 +95,7 @@ function getPrice(item){
     console.log('entering');
     $.ajax({
         type: "POST",
-        url: "/price_estimating",
+        url: "/price_estimate",
         async: true,
         data: {item: item}
     });

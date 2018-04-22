@@ -330,24 +330,39 @@ var https = require('https');
 var uberData = '';
 exports.getEstimate = function(request, response) {
     console.log('is it entering here');
-    var option = {
-        hostname: 'api.uber.com',
-        port: 443,
-        path: '/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ',
-        method: 'get'
-    };
-    return new Promise(function (resolve, reject) {
-        var req = https.get(option, function (res) {
-            console.log('ppp');
-            res.on('data', function (chunk) {
-                uberData = uberData + chunk;
-            });
-            res.on('end', () => resolve(uberData));
-            req.on('error', reject);
-            req.end();
+    console.log(request.params.id);
+    return new Promise(function (resolve) {
+        Plan.findOne({"_id": request.params.id}, function(err, plan){
+            var record = {
+                "plan": plan,
+                "myEmail": request.session.userEmail
+            };
+            resolve(record);
         });
     }).then(function(res) {
-      response.render('price_estimate', {res: res});
+      console.log('item');
+      console.log(res);
+        return new Promise(function (resolve, reject) {
+            var option = {
+                hostname: 'api.uber.com',
+                port: 443,
+                path: '/v1.2/estimates/price?' +
+                `start_latitude=${parseFloat(res.plan.source_lat)}&start_longitude=${parseFloat(res.plan.source_long)}&end_latitude=${parseFloat(res.plan.dest_lat)}&end_longitude=${parseFloat(res.plan.dest_long)}&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ`,
+                method: 'get'
+            };
+            var req = https.get(option, function (res) {
+                console.log('ppp');
+                res.on('data', function (chunk) {
+                    uberData = uberData + chunk;
+                });
+                res.on('end', () => resolve(uberData));
+                req.on('error', reject);
+                req.end();
+            });
+        }).then(function(resp) {
+            console.log(JSON.parse(resp));
+            response.render('price_estimate', {res: JSON.parse(resp)});
+        });
     });
 };
     // uberData = '';
