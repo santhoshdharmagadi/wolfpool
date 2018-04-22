@@ -328,6 +328,7 @@ exports.searchPlan = function(request, response) {
 
 var https = require('https');
 var uberData = '';
+var prices = {};
 exports.getEstimate = function(request, response) {
     console.log('is it entering here');
     console.log(request.params.id);
@@ -361,8 +362,15 @@ exports.getEstimate = function(request, response) {
             });
         }).then(function(resp) {
             console.log(JSON.parse(resp));
-            response.render('price_estimate', {resp: JSON.parse(resp)});
+            prices = JSON.parse(resp);
+            response.render('price_estimate', {resp: resp});
         });
+    });
+};
+
+exports.getEstimatedPrice = function() {
+    return new Promise(function (resolve) {
+      return resolve(prices);
     });
 };
     // uberData = '';
