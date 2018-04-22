@@ -54,7 +54,7 @@ $(document).ready(function() {
                                 "<td align='center'>" +
                                 "<form role='form' action='/price_estimate' name='price-estimate-form' method='POST' id='price'>" +
                                 "<div class='form-group'>" +
-                                "<button type='submit' class='btn btn-primary' id='get_price'>Get Price Estimate</button>"
+                                "<button type='button' onClick=getPrice(item) class='btn btn-primary' id='get_price'>Get Price Estimate</button>"
                                 + "</div></form></td>" +
 						"<td align='center'><a href='/delete/" + item._id + "'> Delete Plan </a></td>" +
 						"</tr>";
@@ -80,4 +80,10 @@ $(document).ready(function() {
 	});
 
 });
+function getPrice(item){
+	$.post("/price_estimate",
+	{
+		item: item
+	});
+}
 </script>
