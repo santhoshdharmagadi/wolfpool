@@ -65,29 +65,37 @@
     function fetch_chat(){
         $.ajax({
             type: "POST",
-            url: "/Chat_Room/1",
+            url: "/Chat_Room/{{id}}",
             async: true,
             success: function (json_data) {
-                console.log(json_data);
-                if ($.trim(json_data)) {
+                console.log(JSON.stringify(json_data));
+                var parsed_data = json_data.chat;
+                console.log(parsed_data[0].message);
+                if ($.trim(parsed_data)) {
                     //$('#resultTable tbody> tr').remove();
-                    var len = json_data.length;
-                    for (var i = 0; i < json_data.chat.length; i++) {
+                    let len = parsed_data.length;
+                    console.log("length is ---------"+len);
+                    console.log(parsed_data[3].message);
+                    
+                    {{!-- for (chat in parsed_data){ --}}
+                    for(var i = 0; i < len; i++) {
+                        console.log(parsed_data[i].message);
                         let test;
-                        {{!-- if(request.session.userEmail==json_data.chat.user_email){
+                        {{!-- if(request.session.userEmail==parsed_data.chat.user_email){
                            test = "<label  value='{{json_data.chat[i].user_email}}+{{json_data.chat[i].message}}' style='float:right'>";
                         }else{ --}}
                             {{!-- test = "<label  value='{{json_data.chat[i].user_email}}+{{json_data.chat[i].message}}' style='float:left'>"; --}}
-                            test = "<label  value='{{json_data}}' style='float:left'>";
+                            test = "<label style='float:left'>  "+parsed_data[i].message +"</label>";
 
                         {{!-- } --}}
-
-                        $('#ChatArea').append(test);
-                        $('#ChatArea').append(<br>);
+                    console.log(test);
+                        $('#chat_hist').append(test);
+                        $('#chat_hist').append('<br>');
                     }
                 }
             }, error: function (request, status, error) {
-                alert("failed to load chat this time");
+                console.log(error);
+                alert("failed to load chat this time, please navigate from home page");
                 console.log(request.responseText);
             }
         });

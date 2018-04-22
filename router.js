@@ -180,5 +180,5 @@ module.exports = function(app) {
 // routes related to chat
 //  app.post('/add_chat/:trip_id', PlanController.tripChat);
   app.post('/addChat/', PlanController.addMessage);
-  app.post('/Chat_Room/:trip_id', PlanController.tripChat);
+  app.post('/Chat_Room/:id', PlanController.tripChat);
 };

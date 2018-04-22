@@ -445,8 +445,10 @@ exports.tripChat = function(request, response){
     if (err) {
       response.status(500).send("Invalid trip id. Please select other trip.");
     } else {
+      console.log("fetched to chat ");
       if(chat_res){
         console.log("chat pres");
+        console.log(chat_res);
         response.send(chat_res);
       }
       else{
