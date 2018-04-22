@@ -329,7 +329,10 @@ exports.searchPlan = function(request, response) {
 var https = require('https');
 var uberData = '';
 var prices = {};
+var item = {};
 exports.getEstimate = function(request, response) {
+  uberData = '';
+  item = {};
     console.log('is it entering here');
     console.log(request.params.id);
     return new Promise(function (resolve) {
@@ -341,8 +344,8 @@ exports.getEstimate = function(request, response) {
             resolve(record);
         });
     }).then(function(res) {
-      console.log('item');
-      console.log(res);
+      item = res.plan;
+      console.log(item);
         return new Promise(function (resolve, reject) {
             var option = {
                 hostname: 'api.uber.com',
@@ -356,13 +359,14 @@ exports.getEstimate = function(request, response) {
                 res.on('data', function (chunk) {
                     uberData = uberData + chunk;
                 });
-                res.on('end', () => resolve(uberData));
+                // res.on('end', () => resolve(JSON.stringify({data: JSON.parse(uberData), item: item})));
+                res.on('end', () => resolve(JSON.stringify({data: JSON.parse(uberData), item: item})));
                 req.on('error', reject);
                 req.end();
             });
         }).then(function(resp) {
-            console.log(JSON.parse(resp));
-            prices = JSON.parse(resp);
+            // console.log(JSON.parse(resp));
+            // prices = JSON.parse(resp);
             response.render('price_estimate', {resp: resp});
         });
     });
