@@ -52,7 +52,7 @@
                     <input type="radio" name="luggage" value="2"> Two
                 </div>
 
-                <div class="form-group">
+                <div id="max_people" class="form-group">
                     <label for="people">Maximum number of people</label><br>
                     <input type="radio" name="maximum_coPassengers" value="2" checked> two<br>
                     <input type="radio" name="maximum_coPassengers" value="4"> four<br>
@@ -149,6 +149,7 @@
 
 	$(document).ready(function() {
 
+	    $('#max_people').hide();
         $.ajax({
             type: "GET",
             url: "/get_plan/{{id._id}}",
