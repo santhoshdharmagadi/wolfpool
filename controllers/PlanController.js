@@ -373,13 +373,11 @@ exports.getEstimate = function(request, response) {
     });
 };
 
-<<<<<<< HEAD
 exports.getEstimatedPrice = function() {
     return new Promise(function (resolve) {
       return resolve(prices);
     });
 };
-=======
 exports.tripChat = function(request, response){
   Chat.findOne({
     "trip_id": request.params.id
@@ -428,7 +426,6 @@ exports.addMessage = function(request, response){
   });
 };
 
->>>>>>> feat: backend - chat application backend controllers
     // uberData = '';
     // console.log('111');
     // console.log(request.params.id);
