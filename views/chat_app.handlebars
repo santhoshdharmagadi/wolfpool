@@ -1,0 +1,96 @@
+<div class="page-header">
+    <h2>Trip Private Chat Room</h2>
+    <div class="page-header">
+	<h2>Welcome to the chat room of the trip:{{id}}</h2>
+</div>
+		
+            <div id="chat_hist">
+                {{!-- <input type="textArea" class="form-control" id="ChatArea" name="ChatArea" > --}}
+            </div>
+<div class="row">
+	<div class="col-lg-12">
+
+        <form role="form" action="/addChat/" name="chat_form" method="POST" id="mainDetailsForm">
+
+        <input class="form-control" type='hidden' name='trip_id' value={{id}}>
+
+
+			<div class="form-group">
+				<label for="send_message">your message:</label>
+				<input type="textArea" class="form-control" id="message" name="message" placeholder="Let's make some noise">
+			</div>
+
+            <div class="form-group">
+				<button type="submit"  class="btn btn-primary">Join Plan</button>
+			</div>
+        </form>
+    </div>
+</div>
+{{!-- onclick="return refreshDisplay()" --}}
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        fetch_chat();
+    });
+
+    function refreshDisplay() {
+
+			$.ajax({
+				type: "POST",
+				dataType: 'text',
+				data: {
+					"user": session.user_email,
+					"selectedPlan": document.getElementById("new_message").value
+				},
+				url: "/addChat",
+				async: true,
+				success: function(data) {
+					if (data) {
+						{{!-- window.location.href = data; --}}
+                        console.log("success added");
+                        fetch_chat();
+					} else {
+						alert("There was an error, please refresh and try again.");
+					}
+				},
+				error: function(request, status, error) {
+					alert(error);
+					console.log(error);
+				}
+			});
+	}
+
+    function fetch_chat(){
+        $.ajax({
+            type: "POST",
+            url: "/Chat_Room/1",
+            async: true,
+            success: function (json_data) {
+                console.log(json_data);
+                if ($.trim(json_data)) {
+                    //$('#resultTable tbody> tr').remove();
+                    var len = json_data.length;
+                    for (var i = 0; i < json_data.chat.length; i++) {
+                        let test;
+                        {{!-- if(request.session.userEmail==json_data.chat.user_email){
+                           test = "<label  value='{{json_data.chat[i].user_email}}+{{json_data.chat[i].message}}' style='float:right'>";
+                        }else{ --}}
+                            {{!-- test = "<label  value='{{json_data.chat[i].user_email}}+{{json_data.chat[i].message}}' style='float:left'>"; --}}
+                            test = "<label  value='{{json_data}}' style='float:left'>";
+
+                        {{!-- } --}}
+
+                        $('#ChatArea').append(test);
+                        $('#ChatArea').append(<br>);
+                    }
+                }
+            }, error: function (request, status, error) {
+                alert("failed to load chat this time");
+                console.log(request.responseText);
+            }
+        });
+    }
+
+</script>

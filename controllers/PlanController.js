@@ -3,6 +3,7 @@ var haversine = require('haversine-distance');
 var Plan = require('../models/plan');
 var Rating = require('../models/rating');
 var Feedback = require('../models/feedback');
+let Chat = require('../models/chat');
 
 var checker = 0;
 
@@ -372,11 +373,62 @@ exports.getEstimate = function(request, response) {
     });
 };
 
+<<<<<<< HEAD
 exports.getEstimatedPrice = function() {
     return new Promise(function (resolve) {
       return resolve(prices);
     });
 };
+=======
+exports.tripChat = function(request, response){
+  Chat.findOne({
+    "trip_id": request.params.id
+  }, function(err, chat_res){
+    if (err) {
+      response.status(500).send("Invalid trip id. Please select other trip.");
+    } else {
+      if(chat_res){
+        console.log("chat pres");
+        response.send(chat_res);
+      }
+      else{
+        response.send("no chat right now, lets begin the conversation");
+      }
+    }
+  });
+};
+
+exports.addMessage = function(request, response){
+  Chat.findOne({"trip_id": request.body.trip_id}, function(err, chat_res) {
+    if (err) {
+      response.status(500).send("Invalid trip id. Please select other trip.");
+    } else {
+      mychat= {"user_email": request.session.userEmail, "message" : request.body.message};
+      if(chat_res){
+        chat_res.chat.push(mychat);
+        chat_res.save(function(err){
+          if(err){
+            response.render('404');
+          }else{
+            response.render('chat_app');
+          }
+        });
+      } else{
+        new_chat = {"trip_id":request.body.trip_id, "chat": mychat};
+        Chat.create(new_chat, function(err, result){
+          if(err){
+            response.status(400).send(err);
+          }else{
+            console.log("created chat "+new_chat);
+            response.render('chat_app');
+          }
+        });
+      }
+  }
+  });
+};
+
+>>>>>>> feat: backend - chat application backend controllers
     // uberData = '';
     // console.log('111');
     // console.log(request.params.id);

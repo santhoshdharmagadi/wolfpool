@@ -78,6 +78,16 @@ module.exports = function(app) {
     }
   });
 
+  app.get('/chat_app/:id', function(req, res){
+    if(req.session && req.session.userId){
+      res.render('chat_app', {id: req.params.id});
+    }
+    else{
+      res.render('home');
+    }
+
+  });
+
     // app.use('/price_estimate/', function(req, res){
     //     if(req.session && req.session.userId){
     //         var option = {
@@ -167,4 +177,8 @@ module.exports = function(app) {
   app.post('/loginUser', UserController.loginUser);
   app.get('/profile_page', UserController.getProfile);
 
+// routes related to chat
+  app.post('/add_chat/:trip_id', PlanController.tripChat);
+  app.post('/addChat/', PlanController.addMessage);
+  app.post('/Chat_Room/:trip_id', PlanController.tripChat);
 };
