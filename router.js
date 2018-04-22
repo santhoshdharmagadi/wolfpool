@@ -1,6 +1,7 @@
 var bodyParser = require('body-parser');
 var UserController = require('./controllers/UserController');
 var PlanController = require('./controllers/PlanController');
+var https = require('https');
 
 // Routes
 module.exports = function(app) {
@@ -77,36 +78,63 @@ module.exports = function(app) {
     }
   });
 
-    app.use('/price_estimate/', function(req, res){
-        if(req.session && req.session.userId){
-            var option = {
-                hostname: 'api.uber.com',
-                port: 443,
-                path: '/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ',
-                method: 'get'
-            };
-
-            let req = https.request(option, function (res) {
-                var uberData = '';
-                res.on('data', function (chunk) {
-                    uberData = uberData + chunk;
-                });
-                res.on('end', function() {
-                    // console.log(uberData);
-                    console.log(JSON.parse(uberData));
-                });
-            });
-
-            req.end('data', function() {
-                next();
-            });
-            res.render('price_estimate', {id: req.params.id});
-        }
-    });
-
+    // app.use('/price_estimate/', function(req, res){
+    //     if(req.session && req.session.userId){
+    //         var option = {
+    //             hostname: 'api.uber.com',
+    //             port: 443,
+    //             path: '/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ',
+    //             method: 'get'
+    //         };
+    //
+    //         let req = https.request(option, function (res) {
+    //             var uberData = '';
+    //             res.on('data', function (chunk) {
+    //                 uberData = uberData + chunk;
+    //             });
+    //             res.on('end', function() {
+    //                 // console.log(uberData);
+    //                 console.log(JSON.parse(uberData));
+    //             });
+    //         });
+    //
+    //         req.end('data', function() {
+    //             next();
+    //         });
+    //         res.render('price_estimate', {id: req.params.id});
+    //     }
+    // });
   app.post('/register_page', function(req, res) {
     res.render('register');
   });
+    //
+    // app.use('/price_estimate', function(reqs, rest, next) {
+    //     console.log(reqs.body);
+        // console.log('reqs.body');
+        // var option = {
+        //     hostname: 'api.uber.com',
+        //     port: 443,
+        //     path: '/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ',
+        //     method: 'get'
+        // };
+        //
+        // let req = https.request(option, function (res) {
+        //     var uberData = '';
+        //     res.on('data', function (chunk) {
+        //         uberData = uberData + chunk;
+        //     });
+        //     res.on('end', function() {
+        //         // console.log(uberData);
+        //         console.log(JSON.parse(uberData));
+        //         // rest.render('home');
+        //         next();
+        //     });
+        // });
+
+        // req.end('', function() {
+        //     rest.render('price_estimate');
+        // });
+    // });
 
   // Routes related to Plan
   app.post('/savePlan', PlanController.savePlan);
@@ -119,6 +147,7 @@ module.exports = function(app) {
   app.get('/delete/:id', PlanController.deletePlan);
   app.get('/edit/:id', PlanController.editPlan);
   app.get('/get_plan/:id', PlanController.get_plan);
+  app.post('/price_estimate/', PlanController.getEstimate);
 
   // Routes related to User
   app.get('/verify_user/:email/:verfhash', UserController.verifyUser);

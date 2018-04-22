@@ -325,3 +325,69 @@ exports.searchPlan = function(request, response) {
     }
   });
 };
+
+var https = require('https');
+var uberData = '';
+exports.getEstimate = function(request, response) {
+    console.log('is it entering here');
+    var option = {
+        hostname: 'api.uber.com',
+        port: 443,
+        path: '/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ',
+        method: 'get'
+    };
+    return new Promise(function (resolve, reject) {
+        var req = https.get(option, function (res) {
+            console.log('ppp');
+            res.on('data', function (chunk) {
+                uberData = uberData + chunk;
+            });
+            res.on('end', () => resolve(uberData));
+            req.on('error', reject);
+            req.end();
+        });
+    }).then(function(res) {
+      response.render('price_estimate', {res: res});
+    });
+};
+    // uberData = '';
+    // console.log('111');
+    // console.log(request.params.id);
+    // Plan.findById(request.params.id, function(err, plan){
+    //   if (!err) {
+    //       var option = {
+    //           hostname: 'api.uber.com',
+    //           port: 443,
+    //           path: '/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ',
+    //           method: 'get'
+    //       };
+    //
+    //       let req = https.request(option, function (res) {
+    //           console.log('ppp');
+    //           res.on('data', function (chunk) {
+    //               uberData = uberData + chunk;
+    //           });
+    //           res.on('end', function () {
+    //               console.log(JSON.parse(uberData));
+    //               console.log('111111');
+    //               response.render('home');
+    //           });
+    //       });
+    //       console.log(plan);
+    //   }
+    // });
+
+
+    // req.end();
+    //
+    // req.end('', function() {
+    //     rest.render('price_estimate');
+    // });
+    // });
+// };
+    // app.post('/price_estimating', function(req, rest) {
+    //     console.log('is it entering here');
+    //
+    // });
+
+// };
