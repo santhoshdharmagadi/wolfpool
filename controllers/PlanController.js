@@ -86,7 +86,7 @@ exports.rate_users = function(request, response){
     if(err){
       response.status(400).send(err);
     }else{
-      response.send(result);
+      response.render('plans_page');
     }
   });
 };
@@ -109,7 +109,7 @@ exports.add_feedback = function(request, response){
     if(err){
       response.status(400).send(err);
     }else{
-      response.send(result);
+      response.render('plans_page');
     }
   });
 };
