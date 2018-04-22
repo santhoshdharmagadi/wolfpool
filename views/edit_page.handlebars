@@ -157,8 +157,10 @@
                 if(json_data.length != undefined){
                     document.getElementById('time_id').value = `{{id.time}}`;
                     document.getElementById('no_of_people_id').value = `{{id.no_of_people}}`;
+					document.getElementById('source_id').value = `{{id.source_id}}`;
                     document.getElementById('source_lat').value = `{{id.source_lat}}`;
                     document.getElementById('source_long').value = `{{id.source_long}}`;
+					document.getElementById('destination_id').value = `{{id.destination_id}}`;
                     document.getElementById('dest_lat').value = `{{id.dest_lat}}`;
                     document.getElementById('dest_long').value = `{{id.dest_long}}`;
                     document.getElementById('additional-box').checked = true;
@@ -167,8 +169,10 @@
                     document.getElementById('date_id').value = json_data.date.split("T")[0];
                     document.getElementById('time_id').value = json_data.time;
                     document.getElementById('no_of_people_id').value = json_data.no_of_people;
+					document.getElementById('source_id').value = json_data.source_id;
                     document.getElementById('source_lat').value = json_data.source_lat;
                     document.getElementById('source_long').value = json_data.source_long;
+					document.getElementById('destination_id').value = json_data.destination_id;
                     document.getElementById('dest_lat').value = json_data.dest_lat;
                     document.getElementById('dest_long').value = json_data.dest_long;
                     document.getElementById('additional-box').checked = true;
