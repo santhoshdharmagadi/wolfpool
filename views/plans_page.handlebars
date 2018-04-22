@@ -16,8 +16,10 @@
 					<th>Vacancy</th>
 					<th>Rating</th>
 					<th>Feedback</th>
-					<th>Estimate</th>
+					<th>Price Estimate</th>
+					<th>Edit</th>
 					<th>Delete</th>
+					
 				 </tr>
 			    </thead>
 	        </table>
@@ -56,6 +58,7 @@ $(document).ready(function() {
                                 "<div class='form-group'>" +
                                 "<button type='button' onClick=getPrice(item) class='btn btn-primary' id='get_price'>Get Price Estimate</button>"
                                 + "</div></form></td>" +
+						"<td align='center'><a href='/edit/" + item._id + "'>Edit Plan</a></td>" +
 						"<td align='center'><a href='/delete/" + item._id + "'> Delete Plan </a></td>" +
 						"</tr>";
 						$("#resultTable").append(tr_str);

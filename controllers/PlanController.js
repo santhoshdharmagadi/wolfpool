@@ -154,6 +154,62 @@ exports.deletePlan = function(request, response){
   }
 }
 
+exports.editPlan = function(request, response){
+  if(request.session && request.session.userEmail){
+    Plan.findById(request.params.id, function(err, plan){
+      if(err){
+        response.status(400).send(err);
+      }else{
+        var details = plan.people_per_email.filter(function(el){
+          return el.email == request.session.userEmail;
+        });
+        plan.no_of_people = plan.no_of_people - details[0].passengers;
+        plan.vacancy = 6 - plan.no_of_people; 
+        plan.people_per_email = plan.people_per_email.filter(function(el){
+          return el.email != request.session.userEmail;
+        });
+        plan.emails = plan.emails.filter(function(el){
+          return el != request.session.userEmail;
+        })
+
+        if(plan.emails.length == 0){
+          Plan.findByIdAndRemove(plan._id, (err, plan)=>{
+            if(err){
+              response.render('404');
+            }else{
+              response.render('edit_page', {id: plan});
+            }
+          });
+        }else{
+          plan.save(function(err){
+            if(err){
+              response.render('404');
+            }else{
+              response.render('edit_page', {id: plan});
+            }
+          });
+        }
+        
+        
+      }
+    });
+  }
+};
+
+exports.get_plan = function(request, response){
+  if(request.session && request.session.userEmail){
+    Plan.findById(request.params.id, function(err, plan){
+      if(err){
+        response.render('404');
+      }else{
+        console.log(request.params.id);
+        console.log("Plan -> " + plan);
+        response.send(plan);
+      }
+    });
+  }
+};
+
 exports.joinPlan = function(request, response) {
 
   var planId = request.body.selectedPlan;
