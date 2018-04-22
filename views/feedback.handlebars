@@ -1,9 +1,22 @@
-<div class="page-header">
-    <h2>Rate Users</h2>
-    <form action="/add_feedback" , method="POST" id="feedback_form">
+<div class="row" style="margin-top:40px">
+  <div class="col-lg-6 col-lg-offset-3 col-sm-12">
+    <div class="alert alert-info" role="alert">
+        <div class="page-header">
+            <h4 class="rate-users">Rate Users</h4>
+            <form action="/add_feedback" , method="POST" id="feedback_form">
 
-    </form>
+            </form>
+        </div>
+    </div>
+  </div>  
 </div>
+
+<style>
+    .rate-users{
+        text-align: center;
+        color: whitesmoke;
+    }
+</style>
 
 <script>
     $(document).ready(function () {
@@ -21,7 +34,7 @@
                     $('#feedback_form').append(test);
                     for (var i = 0; i < json_data.plan.emails.length; i++) {
                         if (json_data.plan.emails[i] != json_data.myEmail) {
-                            var email = json_data.plan.emails[i] + "<textarea name='" + json_data.plan.emails[i] + "' </textarea>";
+                            var email = json_data.plan.emails[i] + ":<br/><textarea name='" + json_data.plan.emails[i] + "' </textarea>";
                                     
                             $('#feedback_form').append(email);
                             $('#feedback_form').append('<br/>');
