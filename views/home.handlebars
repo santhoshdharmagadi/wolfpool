@@ -201,7 +201,6 @@
 			sourceAutocomplete.addListener('place_changed', function() {
 				sourceObject = sourceAutocomplete.getPlace();
 				map.setCenter(sourceObject.geometry.location);
-				console.log("dsahdjhaj");
 				marker.setLabel('Source');
 				marker.setPosition(sourceObject.geometry.location);
 			});
