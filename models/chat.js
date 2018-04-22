@@ -1,10 +1,9 @@
 var mongoose = require('mongoose');
 
 var chatSchema = new mongoose.Schema({
-  user_id: String,
-  user_name: String,
+  trip_id: String,
   chat: {
-    user_name:  String,
+    user_email:  String,
     message:    String
   }
 });
