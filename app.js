@@ -55,7 +55,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/price_estimate', function(err, res, next) {
+app.post('/price_estimate', function(reqs, res) {
+    console.log(reqs.body);
     var option = {
         hostname: 'api.uber.com',
         port: 443,
@@ -71,13 +72,14 @@ app.use('/price_estimate', function(err, res, next) {
         res.on('end', function() {
             // console.log(uberData);
             console.log(JSON.parse(uberData));
+            app.render('price_estimate', {resp: '123'});
         });
     });
 
-    req.end('data', function() {
-        next();
-    });
+    req.end();
 });
+
+
 
 // send app to router
 require('./router')(app);
