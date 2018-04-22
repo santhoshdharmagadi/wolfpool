@@ -283,10 +283,10 @@ exports.searchPlan = function(request, response) {
   };
   var query = {
     "date": {
-      $gte: userRequest.date
+      $eq: userRequest.date
     },
     "time": {
-      $gte: userRequest.time
+      $eq: userRequest.time
     },
     "emails": {
       $ne: request.session.userEmail
@@ -301,7 +301,7 @@ exports.searchPlan = function(request, response) {
       response.status(500).send(err);
     } else {
       console.log("found " + plans.length);
-      var results = [];
+      var temp = [];
       for (var i = 0; i < plans.length; i++) {
         var optionSrc = {
           lat: plans[i].source_lat,
@@ -315,10 +315,70 @@ exports.searchPlan = function(request, response) {
         if (haversine(currSrc, optionSrc) < 2000 && haversine(currDest, optionDest) < 2000) {
           plans[i].src_distance = Math.round(haversine(currSrc, optionSrc) * 0.000621371 * 100) / 100; //to calculate the distance in miles
           plans[i].dest_distance = Math.round(haversine(currDest, optionDest) * 0.000621371 * 100) / 100; //to calculate the distance in miles
-          results.push(plans[i]);
+          temp.push(plans[i]);
           checker = 1;
         }
       }
+
+      var results = [];
+      var match0 = [];
+      var match1 = [];
+      var match2 = [];
+      var match3 = [];
+      var match4 = [];
+
+      if(checker == 1){
+        var count = 0;
+        for(var i = 0;i < temp.length; i++){
+          if(temp[i].gender_preference == userRequest.gender_preference){
+            count = count + 1;
+          }
+          if(temp[i].luggage == userRequest.luggage){
+            count = count + 1;
+          }
+          if(temp[i].no_of_people <= userRequest.maximum_coPassengers){
+            count = count + 1;
+          }
+          if(count == 4){
+            match4.push(temp[i]);
+          }
+          if(count == 3){
+            match3.push(temp[i]);
+          }
+          if(count == 2){
+            match2.push(temp[i]);
+          }
+          if(count == 1){
+            match1.push(temp[i]);
+          }
+          if(count == 0){
+            match0.push(temp[i]);
+          }
+          
+        }
+
+        for(var i = 0;i < match4.length;i++){
+          results.push(match4[i]);
+        }
+
+        for(var i = 0;i < match3.length;i++){
+          results.push(match3[i]);
+        }
+
+        for(var i = 0;i < match2.length;i++){
+          results.push(match2[i]);
+        }
+
+        for(var i = 0;i < match1.length;i++){
+          results.push(match1[i]);
+        }
+
+        for(var i = 0;i < match0.length;i++){
+          result.push(match0[i]);
+        }
+      }
+
+      
       // console.log("*********result "+results);
       response.setHeader('Content-Type', 'application/json');
       response.send(JSON.stringify(results));
