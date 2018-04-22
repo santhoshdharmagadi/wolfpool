@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var https = require('https');
+var bodyParser = require('body-parser');
 var session = require('express-session');
 var handlebars = require('express-handlebars');
 var mongoose = require('mongoose');
@@ -7,7 +9,6 @@ var MongoStore = require('connect-mongo')(session);
 var expressValidator = require('express-validator');
 var geolib = require('geolib');
 var cors = require('cors');
-app.use(cors());
 var Uber = require('node-uber');
 
 // var uber = new Uber({
@@ -50,6 +51,33 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public'));
 
 app.use(expressValidator());
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
+app.use('/price_estimate', function(err, res, next) {
+    var option = {
+        hostname: 'api.uber.com',
+        port: 443,
+        path: '/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ',
+        method: 'get'
+    };
+
+    let req = https.request(option, function (res) {
+        var uberData = '';
+        res.on('data', function (chunk) {
+            uberData = uberData + chunk;
+        });
+        res.on('end', function() {
+            // console.log(uberData);
+            console.log(JSON.parse(uberData));
+        });
+    });
+
+    req.end('data', function() {
+        next();
+    });
+});
 
 // send app to router
 require('./router')(app);
