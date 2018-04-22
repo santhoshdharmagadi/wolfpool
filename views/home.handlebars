@@ -191,11 +191,9 @@
 		function showPosition(position) {
 			currLat = position.coords.latitude;
 			currLong = position.coords.longitude;
-
 			// Create and Bind inputs to Map
 			sourceAutocomplete = new google.maps.places.Autocomplete(document.getElementById('source_id'));
 			destinationAutocomplete = new google.maps.places.Autocomplete(document.getElementById('destination_id'));
-
 			sourceAutocomplete.bindTo('bounds', map);
 			destinationAutocomplete.bindTo('bounds', map);
 
@@ -335,7 +333,6 @@
 	});
 
 	function showSearchOptions() {
-	    console.log('hello');
 	    var options = $('#mainDetailsForm').serialize();
 	    console.log(options);
 	    if (options.indexOf('searchOptions') >= 0) {
