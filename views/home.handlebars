@@ -40,9 +40,9 @@
             <div id="search-options">
                 <div class="form-group">
                     <label for="date_id">Gender Preference</label><br>
-                    <input type="radio" name="gender_preference" value="0" checked> Male<br>
-                    <input type="radio" name="gender_preference" value="1"> Female<br>
-                    <input type="radio" name="gender_preference" value="2"> Anything is fine
+                    <input type="radio" name="gender_preference" value="0" checked>It deos not matter<br>
+                    <input type="radio" name="gender_preference" value="1"> Male<br>
+                    <input type="radio" name="gender_preference" value="2"> Female
                 </div>
 
                 <div class="form-group">
@@ -52,7 +52,7 @@
                     <input type="radio" name="luggage" value="2"> Two
                 </div>
 
-                <div class="form-group">
+                <div id="max_people" class="form-group">
                     <label for="people">Maximum number of people</label><br>
                     <input type="radio" name="maximum_coPassengers" value="2" checked> two<br>
                     <input type="radio" name="maximum_coPassengers" value="4"> four<br>
@@ -60,11 +60,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="rating">Minimum rating expected</label><br>
-                    <input type="radio" name="minimum_rating" value="1" checked> One<br>
-                    <input type="radio" name="minimum_rating" value="2" checked> Two<br>
-                    <input type="radio" name="minimum_rating" value="3" checked> Three<br>
-                    <input type="radio" name="minimum_rating" value="4" checked> Four<br>
+                    <label for="rating">Minimum rating expected from co-passengers</label><br>
+                    <input type="radio" name="minimum_rating" value="1"> One<br>
+                    <input type="radio" name="minimum_rating" value="2"> Two<br>
+                    <input type="radio" name="minimum_rating" value="3"> Three<br>
+                    <input type="radio" name="minimum_rating" value="4"> Four<br>
                     <input type="radio" name="minimum_rating" value="5" checked> Five<br>
                 </div>
             </div>
@@ -149,6 +149,7 @@
 
 	$(document).ready(function() {
 
+        $('#max_people').hide();
 		$("#mainDetailsForm").keydown(function(event) {
 			if (event.keyCode == 13) {
 				event.preventDefault();
