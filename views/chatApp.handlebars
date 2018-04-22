@@ -1,0 +1,93 @@
+<div class="page-header">
+    <h2>Trip Private Chat Room</h2>
+    <div class="page-header">
+	<h2>Welcome to the chat room of the trip:{{trip_id}}</h2>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+
+		<form role="form" action="/savePlan" name="search_create_form" method="POST" id="mainDetailsForm">
+
+            <div class="form-group">
+                <input type="textArea" class="form-control" id="ChatArea" name="ChatArea" >
+            </div>
+
+			<div class="form-group">
+				<label for="send_message">your message:</label>
+				<input type="text" class="form-control" id="new_message" name="new_message" placeholder="Let's make some noise">
+			</div>
+
+            <div class="form-group">
+				<button type="button" onclick="return refreshDisplay()" class="btn btn-primary">Join Plan</button>
+			</div>
+        </form>
+    </div>
+</div>
+
+
+    <form action="/add_chat/{{id._id}}" , method="POST" id="feedback_form">
+
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        fetch_chat();
+    });
+
+    function fetch_chat(){
+        $.ajax({
+            type: "GET",
+            url: "/Chat_Room/{{id}}",
+            async: true,
+            success: function (json_data) {
+                if ($.trim(json_data)) {
+                    //$('#resultTable tbody> tr').remove();
+                    var len = json_data.length;
+                    for (var i = 0; i < json_data.chat.length; i++) {
+                        let test;
+                        if(request.session.userEmail==json_data.chat.user_name){
+                           test = "<label  value='{{json_data.chat[i].email.user_name}}+{{json_data.chat[i].email.message}}' style='float:right'>";
+                        }else{
+                            test = "<label  value='{{json_data.chat[i].email.user_name}}+{{json_data.chat[i].email.message}}' style='float:left'>";
+                        }
+
+                        $('#ChatArea').append(test);
+                        $('#ChatArea').append(<br>);
+                    }
+                }
+            }, error: function (request, status, error) {
+                alert("failed to load chat this time");
+                console.log(request.responseText);
+            }
+        });
+    }
+
+    function refreshDisplay() {
+
+			$.ajax({
+				type: "POST",
+				dataType: 'text',
+				data: {
+					"user": session.user_email,
+					"selectedPlan": document.getElementById("new_message").value
+				},
+				url: "/addChat",
+				async: true,
+				success: function(data) {
+					if (data) {
+						{{!-- window.location.href = data; --}}
+                        console.log("success added");
+                        fetch_chat();
+					} else {
+						alert("There was an error, please refresh and try again.");
+					}
+				},
+				error: function(request, status, error) {
+					alert(error);
+					console.log(error);
+				}
+			});
+	}
+</script>
