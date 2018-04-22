@@ -17,6 +17,7 @@
 					<th>Edit</th>
 					<th>Price Estimate</th>
 					<th>Rating</th>
+					<th>Chat Room</th>
 					<th>Feedback</th>
 					<th>Delete</th>
 					
@@ -73,6 +74,14 @@ $(document).ready(function() {
                          "<form role='form' " + "action='/rate/" + item._id +"'>" +
                          "<div class='form-group'>" +
                          "<button type='submit' class='btn btn-primary btn-xs' id='get_price'>Provide Rating</button>" +
+                         "</div>" +
+                         "</form>" +
+                         "</td>" +
+						 //"<td align='center'><a href='/chat_app/" + item._id + "'> Chat Room </a></td>" +
+						 "<td align='center'>" +
+                         "<form role='form' " + "action='/chat_app/" + item._id +"'>" +
+                         "<div class='form-group'>" +
+                         "<button type='submit' class='btn btn-primary btn-xs' id='get_price'>Chat room</button>" +
                          "</div>" +
                          "</form>" +
                          "</td>" +
