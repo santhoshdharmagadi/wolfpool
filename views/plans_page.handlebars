@@ -52,7 +52,7 @@ $(document).ready(function() {
 						"<td align='center'>" + item.no_of_people + "</td>" +
 						"<td align='center'>" + item.emails + "</td>" +
 						"<td align='center'>" + item.vacancy + "</td>" +
-						//"<td align='center'><a href='/price_estimate/" + item._id + "'>Estimate Plan</a></td>" +
+						//"<td align='center'><a href='/edit/" + item._id + "'>Edit Plan</a></td>" +
 						 "<td align='center'>" +
                          "<form role='form' " + "action='/edit/" + item._id +"' method='GET'>" +
                          "<div class='form-group'>" +
@@ -60,7 +60,7 @@ $(document).ready(function() {
                          "</div>" +
                          "</form>" +
                          "</td>" +
-						 //"<td align='center'><a href='/edit/" + item._id + "'>Edit Plan</a></td>" +
+						 //"<td align='center'><a href='/price_estimate/" + item._id + "'>Estimate Plan</a></td>" +
 						 "<td align='center'>" +
                          "<form role='form' " + "action='/price_estimate/" + item._id +"' method='GET'>" +
                          "<div class='form-group'>" +
