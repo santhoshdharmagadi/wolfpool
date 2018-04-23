@@ -393,6 +393,8 @@ var prices = {};
 var item = {};
 exports.getEstimate = function(request, response) {
   uberData = '';
+  lyftData='';
+  totalData='';
   item = {};
     console.log('is it entering here');
     console.log(request.params.id);
@@ -408,14 +410,14 @@ exports.getEstimate = function(request, response) {
       item = res.plan;
       console.log(item);
         return new Promise(function (resolve, reject) {
-            var option = {
+            var uberURL = {
                 hostname: 'api.uber.com',
                 port: 443,
                 path: '/v1.2/estimates/price?' +
                 `start_latitude=${parseFloat(res.plan.source_lat)}&start_longitude=${parseFloat(res.plan.source_long)}&end_latitude=${parseFloat(res.plan.dest_lat)}&end_longitude=${parseFloat(res.plan.dest_long)}&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ`,
                 method: 'get'
             };
-            var req = https.get(option, function (res) {
+            var req = https.get(uberURL, function (res) {
                 console.log('ppp');
                 res.on('data', function (chunk) {
                     uberData = uberData + chunk;
@@ -425,10 +427,27 @@ exports.getEstimate = function(request, response) {
                 req.on('error', reject);
                 req.end();
             });
-        }).then(function(resp) {
+        }).then(function(uberData){
+          var lyftURL = {
+            hostname: 'api.lyft.com',
+            port: 443,
+            path: '/cost?' +
+            `start_lat=${parseFloat(res.plan.source_lat)}&start_lng=${parseFloat(res.plan.source_long)}&end_lat=${parseFloat(res.plan.dest_lat)}&end_lng=${parseFloat(res.plan.dest_long)}&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ`,
+            method: 'get'
+          };
+          var req = https.get(lyftURL, function (res) {
+            res.on('data', function (chunk) {
+                lyftData = lyftData + chunk;
+            });
+            // res.on('end', () => resolve(JSON.stringify({data: JSON.parse(uberData), item: item})));
+            res.on('end', () => resolve(JSON.stringify({uberData: JSON.parse(uberData), lyftData: JSON.parse(lyftData), item: item})));
+            req.on('error', reject);
+            req.end();
+        });
+        }).then(function(totalData) {
             // console.log(JSON.parse(resp));
             // prices = JSON.parse(resp);
-            response.render('price_estimate', {resp: resp});
+            response.render('price_estimate', {resp: totalData});
         });
     });
 };
