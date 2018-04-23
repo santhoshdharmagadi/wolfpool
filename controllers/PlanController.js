@@ -389,12 +389,12 @@ exports.searchPlan = function(request, response) {
 
 var https = require('https');
 var uberData = '';
+var lyftData = '';
 var prices = {};
 var item = {};
 exports.getEstimate = function(request, response) {
   uberData = '';
   lyftData='';
-  totalData='';
   item = {};
     console.log('is it entering here');
     console.log(request.params.id);
@@ -407,8 +407,8 @@ exports.getEstimate = function(request, response) {
             resolve(record);
         });
     }).then(function(res) {
-      item = res.plan;
-      console.log(item);
+        item = res.plan;
+        console.log(item);
         return new Promise(function (resolve, reject) {
             var uberURL = {
                 hostname: 'api.uber.com',
@@ -423,31 +423,41 @@ exports.getEstimate = function(request, response) {
                     uberData = uberData + chunk;
                 });
                 // res.on('end', () => resolve(JSON.stringify({data: JSON.parse(uberData), item: item})));
-                res.on('end', () => resolve(JSON.stringify({data: JSON.parse(uberData), item: item})));
+                res.on('end', () => resolve(''));
                 req.on('error', reject);
                 req.end();
             });
-        }).then(function(uberData){
-          var lyftURL = {
-            hostname: 'api.lyft.com',
-            port: 443,
-            path: '/cost?' +
-            `start_lat=${parseFloat(res.plan.source_lat)}&start_lng=${parseFloat(res.plan.source_long)}&end_lat=${parseFloat(res.plan.dest_lat)}&end_lng=${parseFloat(res.plan.dest_long)}&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ`,
-            method: 'get'
-          };
-          var req = https.get(lyftURL, function (res) {
-            res.on('data', function (chunk) {
-                lyftData = lyftData + chunk;
+        }).then(function (respons) {
+            var lyftURL = {
+                hostname: 'api.lyft.com',
+                port: 443,
+                path: `/v1/cost?start_lat=${parseFloat(res.plan.source_lat)}&start_lng=${parseFloat(res.plan.source_long)}&end_lat=${parseFloat(res.plan.dest_lat)}&end_lng=${parseFloat(res.plan.dest_long)}`,
+                method: 'get'
+            };
+            // console.log('enter enter');
+            return new Promise(function (resolve, reject) {
+                var req = https.get(lyftURL, function (res) {
+                    res.on('data', function (chunk) {
+                        lyftData = lyftData + chunk;
+                    });
+
+                    res.on('end', () => resolve(JSON.stringify({
+                        uberData: JSON.parse(uberData),
+                        lyftData: lyftData === '' ? {data: 'null'} : JSON.parse(lyftData),
+                        item: item
+                    })));
+                    // res.on('end', () => resolve('dataa'));
+                    req.on('error', reject);
+                    req.end();
+                });
+            }).then(function (data) {
+                // console.log(JSON.parse(resp));
+                // prices = JSON.parse(resp);
+                // console.log(uberData);
+                // console.log('uberData');
+                // console.log(lyftData);
+                response.render('price_estimate', {resp: data});
             });
-            // res.on('end', () => resolve(JSON.stringify({data: JSON.parse(uberData), item: item})));
-            res.on('end', () => resolve(JSON.stringify({uberData: JSON.parse(uberData), lyftData: JSON.parse(lyftData), item: item})));
-            req.on('error', reject);
-            req.end();
-        });
-        }).then(function(totalData) {
-            // console.log(JSON.parse(resp));
-            // prices = JSON.parse(resp);
-            response.render('price_estimate', {resp: totalData});
         });
     });
 };
