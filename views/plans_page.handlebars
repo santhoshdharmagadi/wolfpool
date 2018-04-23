@@ -73,53 +73,11 @@ $(document).ready(function() {
 						"<td align='center'>" + item.emails + "</td>" +
 						"<td align='center'>" + item.vacancy + "</td>" +
 						"<td align='center'><a href='/edit/" + item._id + "' class='btn btn-primary btn-xs'>Edit Plan</a></td>" +
-						 //"<td align='center'>" +
-                         //"<form role='form' " + "action='/edit/" + item._id +"' method='GET'>" +
-                         //"<div class='form-group'>" +
-                         //"<button type='submit' class='btn btn-primary btn-xs' id='get_price'>Edit Plan</button>" +
-                         //"</div>" +
-                         //"</form>" +
-                         //"</td>" +
 						 "<td align='center'><a href='/price_estimate/" + item._id + "' class='btn btn-primary btn-xs'>Estimate Plan</a></td>" +
-						 //"<td align='center'>" +
-                         //"<form role='form' " + "action='/price_estimate/" + item._id +"' method='GET'>" +
-                         //"<div class='form-group'>" +
-                         //"<button type='submit' class='btn btn-primary btn-xs' id='get_price'>Estimate Plan</button>" +
-                         //"</div>" +
-                         //"</form>" +
-                         //"</td>" +
 						"<td align='center'><a href='/rate/" + item._id + "' data-toggle='modal' class='btn btn-primary btn-xs' data-target='#myModal' data-backdrop='static'> Provide Rating </a></td>" +
-						 //"<td align='center'>" +
-                         //"<form role='form' " + "action='/rate/" + item._id +"'>" +
-                         //"<div class='form-group'>" +
-                         //"<button type='submit' class='btn btn-primary btn-xs' id='get_price'>Provide Rating</button>" +
-                         //"</div>" +
-                         //"</form>" +
-                         //"</td>" +
 						"<td align='center'><a href='/chat_app/" + item._id + "' class='btn btn-primary btn-xs'> Chat Room </a></td>" +
-						 //"<td align='center'>" +
-                         //"<form role='form' " + "action='/chat_app/" + item._id +"'>" +
-                         //"<div class='form-group'>" +
-                         //"<button type='submit' class='btn btn-primary btn-xs' id='get_price'>Chat room</button>" +
-                         //"</div>" +
-                         //"</form>" +
-                         //"</td>" +
 						"<td align='center'><a href='/feedback/" + item._id + "'  data-toggle='modal' class='btn btn-primary btn-xs' data-target='#myModal' data-backdrop='static'> Provide Feedback </a></td>" +
-						 //"<td align='center'>" +
-                         //"<form role='form' " + "action='/feedback/" + item._id +"'>" +
-                         //"<div class='form-group'>" +
-                         //"<button type='submit' class='btn btn-primary btn-xs' id='get_price'>Provide Feedback</button>" +
-                         //"</div>" +
-                         //"</form>" +
-                         //"</td>" +
 						"<td align='center'><a href='/delete/" + item._id + "' class='btn btn-primary btn-xs'> Delete Plan </a></td>" +
-						 //"<td align='center'>" +
-                         //"<form role='form' " + "action='/delete/" + item._id +"' method='GET'>" +
-                         //"<div class='form-group'>" +
-                         //"<button type='submit' class='btn btn-primary btn-xs' id='get_price'>Delete Plan</button>" +
-                         //"</div>" +
-                         //"</form>" +
-                         //"</td>" +
 						"</tr>";
 						$("#resultTable").append(tr_str);
 					}
