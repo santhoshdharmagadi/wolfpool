@@ -1,0 +1,64 @@
+<div class="row" style="margin-top:40px; margin-right:545px;">
+    <div class="alert alert-info" role="alert">
+        <div class="page-header">
+            <h4 class="splitwise-header">Splitwise Manager</h4><br>
+            <form action="/add_splitwise" , method="POST" id="splitwise-form">
+            
+{{!-- var email =  + ":<br/><textarea name='" + json_data.plan.emails[i] + "' </textarea>"; --}}
+			
+
+            </form>
+        </div>
+    </div>
+  </div>  
+
+<style>
+    .splitwise-header{
+        text-align: center;
+        color: whitesmoke;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "GET",
+            url: "/get_trip_users/{{id}}",
+            async: true,
+            success: function (json_data) {
+                if ($.trim(json_data)) {
+                    //$('#resultTable tbody> tr').remove();
+                    var len = json_data.length;
+                    var test = "<input type='hidden' name='id' value='{{id}}' >";
+
+                    let paid_by = "Paid By : <input type='text' name='paid_by' value="+json_data.myEmail+" readonly > &nbsp &nbsp";
+                    let amount = "Amount in USD : <input type='number' min='0.00' max='10000.00' step='1.00' name='amount' placeholder='enter amount in USD' ><br><br>"
+
+                    
+                    $('#splitwise-form').append(test);
+                    $('#splitwise-form').append(paid_by);
+                    $('#splitwise-form').append(amount);
+                    let checkbox_1;
+                    for (var i = 0; i < json_data.plan.emails.length; i++) {
+                        console.log(json_data.plan.emails[i]);
+                        if (json_data.plan.emails[i] != json_data.myEmail) {
+                        checkbox_1 = "<div class='form-group'><center><label for='form-control'>"+
+                            json_data.plan.emails[i]+
+                            "</label><input type='checkbox' class='form-control' id='checkbox_"+i+"' name='checkbox_"+i+"' ></center></div>";
+                        
+                        $('#splitwise-form').append(checkbox_1);
+                        $('#splitwise-form').append('<br/>');
+                        }
+
+                    }
+                    $('#splitwise-form').append('<center><input type="submit" value="Submit"></center>');
+                }
+            }, error: function (request, status, error) {
+                alert(request.responseText);
+                console.log(request.responseText);
+            }
+        });
+
+    });
+</script>

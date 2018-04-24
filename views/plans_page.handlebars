@@ -18,6 +18,7 @@
 					<th>Price Estimate</th>
 					<th>Rating</th>
 					<th>Chat Room</th>
+					<th>Splitwise</th>
 					<th>Feedback</th>
 					<th>Delete</th>
 				 </tr>
@@ -76,6 +77,7 @@ $(document).ready(function() {
 						 "<td align='center'><a href='/price_estimate/" + item._id + "' class='btn btn-primary btn-xs'>Estimate Plan</a></td>" +
 						"<td align='center'><a href='/rate/" + item._id + "' data-toggle='modal' class='btn btn-primary btn-xs' data-target='#myModal' data-backdrop='static'> Provide Rating </a></td>" +
 						"<td align='center'><a href='/chat_app/" + item._id + "' class='btn btn-primary btn-xs'> Chat Room </a></td>" +
+						"<td align='center'><a href='/splitwise_app/" + item._id + "' class='btn btn-primary btn-xs'> Splitwise </a></td>" +
 						"<td align='center'><a href='/feedback/" + item._id + "'  data-toggle='modal' class='btn btn-primary btn-xs' data-target='#myModal' data-backdrop='static'> Provide Feedback </a></td>" +
 						"<td align='center'><a href='/delete/" + item._id + "' class='btn btn-primary btn-xs'> Delete Plan </a></td>" +
 						"</tr>";

@@ -94,6 +94,17 @@ module.exports = function(app) {
 
   });
 
+  app.get('/splitwise_app/:id', function(req, res){
+    if(req.session && req.session.userId){
+      res.render('Splitwise', {id: req.params.id});
+    }
+    else{
+      res.render('home');
+    }
+
+  });
+  
+
     // app.use('/price_estimate/', function(req, res){
     //     if(req.session && req.session.userId){
     //         var option = {
