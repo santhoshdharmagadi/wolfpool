@@ -8,7 +8,7 @@ var Splitwise = require('../models/Splitwise');
 
 var checker = 0;
 
-exports.savePlan = function(request, response) {
+exports.savePlan = function (request, response) {
   console.log(request.body);
   if (checker != 1) {
     var planModel = require('../models/plan')
@@ -28,7 +28,7 @@ exports.savePlan = function(request, response) {
       luggage: request.body.luggage,
       minimum_rating: request.body.minimum_rating,
       maximum_coPassengers: request.body.maximum_coPassengers,
-      people_per_email: [{"email": request.session.userEmail, "passengers": Number(request.body.no_of_people)}],
+      people_per_email: [{ "email": request.session.userEmail, "passengers": Number(request.body.no_of_people) }],
     });
     planData.save()
       .then(item => {
@@ -48,18 +48,18 @@ exports.savePlan = function(request, response) {
 };
 
 
-exports.getPlans = function(request, response) {
+exports.getPlans = function (request, response) {
   Plan.find({
     "emails": request.session.userEmail
-  }, function(err, planslist) {
+  }, function (err, planslist) {
     response.send(planslist);
   });
 };
 
-exports.get_trip_users = function(request, response){
+exports.get_trip_users = function (request, response) {
   Plan.findOne({
     "_id": request.params.id
-  }, function(err, plan){
+  }, function (err, plan) {
     var record = {
       "plan": plan,
       "myEmail": request.session.userEmail
@@ -67,14 +67,14 @@ exports.get_trip_users = function(request, response){
     // console.log(record);
     response.send(record);
   });
-  
+
 };
 
-exports.rate_users = function(request, response){
+exports.rate_users = function (request, response) {
   var rating = [];
-  
-  for(var email in request.body){
-    if(email != 'id'){
+
+  for (var email in request.body) {
+    if (email != 'id') {
       rating.push({
         "trip_id": request.body.id,
         "source_email": request.session.userEmail,
@@ -84,20 +84,20 @@ exports.rate_users = function(request, response){
     }
   }
 
-  Rating.create(rating, function(err, result){
-    if(err){
+  Rating.create(rating, function (err, result) {
+    if (err) {
       response.status(400).send(err);
-    }else{
+    } else {
       response.render('plans_page');
     }
   });
 };
 
-exports.add_feedback = function(request, response){
+exports.add_feedback = function (request, response) {
   var feedback = [];
-  
-  for(var email in request.body){
-    if(email != 'id'){
+
+  for (var email in request.body) {
+    if (email != 'id') {
       feedback.push({
         "trip_id": request.body.id,
         "source_email": request.session.userEmail,
@@ -107,46 +107,46 @@ exports.add_feedback = function(request, response){
     }
   }
 
-  Feedback.create(feedback, function(err, result){
-    if(err){
+  Feedback.create(feedback, function (err, result) {
+    if (err) {
       response.status(400).send(err);
-    }else{
+    } else {
       response.render('plans_page');
     }
   });
 };
 
-exports.deletePlan = function(request, response){
-  if(request.session && request.session.userEmail){
-    Plan.findById(request.params.id, function(err, plan){
-      if(err){
+exports.deletePlan = function (request, response) {
+  if (request.session && request.session.userEmail) {
+    Plan.findById(request.params.id, function (err, plan) {
+      if (err) {
         response.status(400).send(err);
-      }else{
-        var details = plan.people_per_email.filter(function(el){
+      } else {
+        var details = plan.people_per_email.filter(function (el) {
           return el.email == request.session.userEmail;
         });
         plan.no_of_people = plan.no_of_people - details[0].passengers;
-        plan.vacancy = 6 - plan.no_of_people; 
-        plan.people_per_email = plan.people_per_email.filter(function(el){
+        plan.vacancy = 6 - plan.no_of_people;
+        plan.people_per_email = plan.people_per_email.filter(function (el) {
           return el.email != request.session.userEmail;
         });
-        plan.emails = plan.emails.filter(function(el){
+        plan.emails = plan.emails.filter(function (el) {
           return el != request.session.userEmail;
         })
 
-        if(plan.emails.length == 0){
-          Plan.findByIdAndRemove(plan._id, (err, plan)=>{
-            if(err){
+        if (plan.emails.length == 0) {
+          Plan.findByIdAndRemove(plan._id, (err, plan) => {
+            if (err) {
               response.render('404');
-            }else{
+            } else {
               response.render('plans_page');
             }
           });
-        }else{
-          plan.save(function(err){
-            if(err){
+        } else {
+          plan.save(function (err) {
+            if (err) {
               response.render('404');
-            }else{
+            } else {
               response.render('plans_page');
             }
           });
@@ -156,54 +156,54 @@ exports.deletePlan = function(request, response){
   }
 }
 
-exports.editPlan = function(request, response){
-  if(request.session && request.session.userEmail){
-    Plan.findById(request.params.id, function(err, plan){
-      if(err){
+exports.editPlan = function (request, response) {
+  if (request.session && request.session.userEmail) {
+    Plan.findById(request.params.id, function (err, plan) {
+      if (err) {
         response.status(400).send(err);
-      }else{
-        var details = plan.people_per_email.filter(function(el){
+      } else {
+        var details = plan.people_per_email.filter(function (el) {
           return el.email == request.session.userEmail;
         });
         plan.no_of_people = plan.no_of_people - details[0].passengers;
-        plan.vacancy = 6 - plan.no_of_people; 
-        plan.people_per_email = plan.people_per_email.filter(function(el){
+        plan.vacancy = 6 - plan.no_of_people;
+        plan.people_per_email = plan.people_per_email.filter(function (el) {
           return el.email != request.session.userEmail;
         });
-        plan.emails = plan.emails.filter(function(el){
+        plan.emails = plan.emails.filter(function (el) {
           return el != request.session.userEmail;
         })
 
-        if(plan.emails.length == 0){
-          Plan.findByIdAndRemove(plan._id, (err, plan)=>{
-            if(err){
+        if (plan.emails.length == 0) {
+          Plan.findByIdAndRemove(plan._id, (err, plan) => {
+            if (err) {
               response.render('404');
-            }else{
-              response.render('edit_page', {id: plan});
+            } else {
+              response.render('edit_page', { id: plan });
             }
           });
-        }else{
-          plan.save(function(err){
-            if(err){
+        } else {
+          plan.save(function (err) {
+            if (err) {
               response.render('404');
-            }else{
-              response.render('edit_page', {id: plan});
+            } else {
+              response.render('edit_page', { id: plan });
             }
           });
         }
-        
-        
+
+
       }
     });
   }
 };
 
-exports.get_plan = function(request, response){
-  if(request.session && request.session.userEmail){
-    Plan.findById(request.params.id, function(err, plan){
-      if(err){
+exports.get_plan = function (request, response) {
+  if (request.session && request.session.userEmail) {
+    Plan.findById(request.params.id, function (err, plan) {
+      if (err) {
         response.render('404');
-      }else{
+      } else {
         console.log(request.params.id);
         console.log("Plan -> " + plan);
         response.send(plan);
@@ -212,17 +212,17 @@ exports.get_plan = function(request, response){
   }
 };
 
-exports.joinPlan = function(request, response) {
+exports.joinPlan = function (request, response) {
 
   var planId = request.body.selectedPlan;
   var numberOfPeople = request.body.numberOfPeople;
 
-  Plan.findById(planId, function(err, plan) {
+  Plan.findById(planId, function (err, plan) {
     if (err) {
       response.status(500).send("The plan you selected got full. Please search again.");
     } else {
       plan.emails.push(request.session.userEmail);
-      plan.people_per_email.push({"email": request.session.userEmail, "passengers": numberOfPeople});
+      plan.people_per_email.push({ "email": request.session.userEmail, "passengers": numberOfPeople });
       plan.no_of_people = +plan.no_of_people + +numberOfPeople;
       plan.vacancy = +plan.vacancy - +numberOfPeople;
       plan.save();
@@ -230,7 +230,7 @@ exports.joinPlan = function(request, response) {
       // Send email to users in list that current user joined plan
       var emails = [];
       var emails_for_mail = "";
-      plan.emails.forEach(function(email) {
+      plan.emails.forEach(function (email) {
         emails.push({
           'Email': email
         });
@@ -246,7 +246,7 @@ exports.joinPlan = function(request, response) {
           "FromEmail": "sengncsu2018@gmail.com",
           "FromName": "Wolfpool Support",
           "Subject": 'Someone just joined your wolfpool plan!',
-          "Html-part": 'Hi there! ' + request.session.userName + ' just joined your trip with details listed below. Following are the email addresses of everyone in the plan: ' + emails_for_mail + '.<br/><br/>Trip details:<br/>Source: ' + plan.source_id + '<br/>Destination: ' + plan.destination_id + '<br/>Date: ' + (plan.date.getMonth() + 1) + '/' + plan.date.getDate() + '/' +  plan.date.getFullYear() + '<br/>Time(24 hr format): ' + plan.time,
+          "Html-part": 'Hi there! ' + request.session.userName + ' just joined your trip with details listed below. Following are the email addresses of everyone in the plan: ' + emails_for_mail + '.<br/><br/>Trip details:<br/>Source: ' + plan.source_id + '<br/>Destination: ' + plan.destination_id + '<br/>Date: ' + (plan.date.getMonth() + 1) + '/' + plan.date.getDate() + '/' + plan.date.getFullYear() + '<br/>Time(24 hr format): ' + plan.time,
           "Recipients": emails
         });
 
@@ -267,10 +267,10 @@ exports.joinPlan = function(request, response) {
 
 }
 
-exports.searchPlan = function(request, response) {
+exports.searchPlan = function (request, response) {
 
   // Show all existing plans that the user can join, along with an option to create
-  checker=0;
+  checker = 0;
   userRequest = request.body
   // console.log(userRequest)
 
@@ -328,58 +328,58 @@ exports.searchPlan = function(request, response) {
       var match3 = [];
       var match4 = [];
 
-      if(checker == 1){
+      if (checker == 1) {
         var count = 0;
-        for(var i = 0;i < temp.length; i++){
-          if(temp[i].gender_preference == userRequest.gender_preference){
+        for (var i = 0; i < temp.length; i++) {
+          if (temp[i].gender_preference == userRequest.gender_preference) {
             count = count + 1;
           }
-          if(temp[i].luggage == userRequest.luggage){
+          if (temp[i].luggage == userRequest.luggage) {
             count = count + 1;
           }
-          if(temp[i].no_of_people <= userRequest.maximum_coPassengers){
+          if (temp[i].no_of_people <= userRequest.maximum_coPassengers) {
             count = count + 1;
           }
-          if(count == 4){
+          if (count == 4) {
             match4.push(temp[i]);
           }
-          if(count == 3){
+          if (count == 3) {
             match3.push(temp[i]);
           }
-          if(count == 2){
+          if (count == 2) {
             match2.push(temp[i]);
           }
-          if(count == 1){
+          if (count == 1) {
             match1.push(temp[i]);
           }
-          if(count == 0){
+          if (count == 0) {
             match0.push(temp[i]);
           }
-          
+
         }
 
-        for(var i = 0;i < match4.length;i++){
+        for (var i = 0; i < match4.length; i++) {
           results.push(match4[i]);
         }
 
-        for(var i = 0;i < match3.length;i++){
+        for (var i = 0; i < match3.length; i++) {
           results.push(match3[i]);
         }
 
-        for(var i = 0;i < match2.length;i++){
+        for (var i = 0; i < match2.length; i++) {
           results.push(match2[i]);
         }
 
-        for(var i = 0;i < match1.length;i++){
+        for (var i = 0; i < match1.length; i++) {
           results.push(match1[i]);
         }
 
-        for(var i = 0;i < match0.length;i++){
+        for (var i = 0; i < match0.length; i++) {
           result.push(match0[i]);
         }
       }
 
-      
+
       // console.log("*********result "+results);
       response.setHeader('Content-Type', 'application/json');
       response.send(JSON.stringify(results));
@@ -393,149 +393,150 @@ var uberData = '';
 var lyftData = '';
 var prices = {};
 var item = {};
-exports.getEstimate = function(request, response) {
+exports.getEstimate = function (request, response) {
   uberData = '';
-  lyftData='';
+  lyftData = '';
   item = {};
-    console.log('is it entering here');
-    console.log(request.params.id);
-    return new Promise(function (resolve) {
-        Plan.findOne({"_id": request.params.id}, function(err, plan){
-            var record = {
-                "plan": plan,
-                "myEmail": request.session.userEmail
-            };
-            resolve(record);
-        });
-    }).then(function(res) {
-        item = res.plan;
-        console.log(item);
-        return new Promise(function (resolve, reject) {
-            var uberURL = {
-                hostname: 'api.uber.com',
-                port: 443,
-                path: '/v1.2/estimates/price?' +
-                `start_latitude=${parseFloat(res.plan.source_lat)}&start_longitude=${parseFloat(res.plan.source_long)}&end_latitude=${parseFloat(res.plan.dest_lat)}&end_longitude=${parseFloat(res.plan.dest_long)}&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ`,
-                method: 'get'
-            };
-            var req = https.get(uberURL, function (res) {
-                console.log('ppp');
-                res.on('data', function (chunk) {
-                    uberData = uberData + chunk;
-                });
-                // res.on('end', () => resolve(JSON.stringify({data: JSON.parse(uberData), item: item})));
-                res.on('end', () => resolve(''));
-                req.on('error', reject);
-                req.end();
-            });
-        }).then(function (respons) {
-            var lyftURL = {
-                hostname: 'api.lyft.com',
-                port: 443,
-                path: `/v1/cost?start_lat=${parseFloat(res.plan.source_lat)}&start_lng=${parseFloat(res.plan.source_long)}&end_lat=${parseFloat(res.plan.dest_lat)}&end_lng=${parseFloat(res.plan.dest_long)}`,
-                method: 'get'
-            };
-            // console.log('enter enter');
-            return new Promise(function (resolve, reject) {
-                var req = https.get(lyftURL, function (res) {
-                    res.on('data', function (chunk) {
-                        lyftData = lyftData + chunk;
-                    });
-
-                    res.on('end', () => resolve(JSON.stringify({
-                        uberData: JSON.parse(uberData),
-                        lyftData: lyftData === '' ? {data: 'null'} : JSON.parse(lyftData),
-                        item: item
-                    })));
-                    // res.on('end', () => resolve('dataa'));
-                    req.on('error', reject);
-                    req.end();
-                });
-            }).then(function (data) {
-                // console.log(JSON.parse(resp));
-                // prices = JSON.parse(resp);
-                // console.log(uberData);
-                // console.log('uberData');
-                // console.log(lyftData);
-                response.render('price_estimate', {resp: data});
-            });
-        });
+  console.log('is it entering here');
+  console.log(request.params.id);
+  return new Promise(function (resolve) {
+    Plan.findOne({ "_id": request.params.id }, function (err, plan) {
+      var record = {
+        "plan": plan,
+        "myEmail": request.session.userEmail
+      };
+      resolve(record);
     });
+  }).then(function (res) {
+    item = res.plan;
+    console.log(item);
+    return new Promise(function (resolve, reject) {
+      var uberURL = {
+        hostname: 'api.uber.com',
+        port: 443,
+        path: '/v1.2/estimates/price?' +
+          `start_latitude=${parseFloat(res.plan.source_lat)}&start_longitude=${parseFloat(res.plan.source_long)}&end_latitude=${parseFloat(res.plan.dest_lat)}&end_longitude=${parseFloat(res.plan.dest_long)}&access_token=KA.eyJ2ZXJzaW9uIjoyLCJpZCI6IlNNTmtrVzdVVGtHY1RwUDNUbXY5NUE9PSIsImV4cGlyZXNfYXQiOjE1MjYwMTUwMzAsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.i_k-F_Qf4YdStWWxTVQ-KFjaQsc4OXvKvMEEajt1wmQ`,
+        method: 'get'
+      };
+      var req = https.get(uberURL, function (res) {
+        console.log('ppp');
+        res.on('data', function (chunk) {
+          uberData = uberData + chunk;
+        });
+        // res.on('end', () => resolve(JSON.stringify({data: JSON.parse(uberData), item: item})));
+        res.on('end', () => resolve(''));
+        req.on('error', reject);
+        req.end();
+      });
+    }).then(function (respons) {
+      var lyftURL = {
+        hostname: 'api.lyft.com',
+        port: 443,
+        path: `/v1/cost?start_lat=${parseFloat(res.plan.source_lat)}&start_lng=${parseFloat(res.plan.source_long)}&end_lat=${parseFloat(res.plan.dest_lat)}&end_lng=${parseFloat(res.plan.dest_long)}`,
+        method: 'get'
+      };
+      // console.log('enter enter');
+      return new Promise(function (resolve, reject) {
+        var req = https.get(lyftURL, function (res) {
+          res.on('data', function (chunk) {
+            lyftData = lyftData + chunk;
+          });
+
+          res.on('end', () => resolve(JSON.stringify({
+            uberData: JSON.parse(uberData),
+            lyftData: lyftData === '' ? { data: 'null' } : JSON.parse(lyftData),
+            item: item
+          })));
+          // res.on('end', () => resolve('dataa'));
+          req.on('error', reject);
+          req.end();
+        });
+      }).then(function (data) {
+        // console.log(JSON.parse(resp));
+        // prices = JSON.parse(resp);
+        // console.log(uberData);
+        // console.log('uberData');
+        // console.log(lyftData);
+        response.render('price_estimate', { resp: data });
+      });
+    });
+  });
 };
 
-exports.getEstimatedPrice = function() {
-    return new Promise(function (resolve) {
-      return resolve(prices);
-    });
+exports.getEstimatedPrice = function () {
+  return new Promise(function (resolve) {
+    return resolve(prices);
+  });
 };
-exports.tripChat = function(request, response){
+exports.tripChat = function (request, response) {
   Chat.findOne({
     "trip_id": request.params.id
-  }, function(err, chat_res){
+  }, function (err, chat_res) {
     if (err) {
       response.status(500).send("Invalid trip id. Please select other trip.");
     } else {
       // console.log("fetched to chat ");
-      if(chat_res){
+      if (chat_res) {
         // console.log("chat pres");
+        chat_res["myEmail"] = request.session.userEmail;
         console.log(chat_res);
         response.send(chat_res);
       }
-      else{
-        response.send("no chat right now, lets begin the conversation");
+      else {
+        response.send({ no_message: "no chat right now, lets begin the conversation" });
       }
     }
   });
 };
 
-exports.addExpense = function(request, response){
+exports.addExpense = function (request, response) {
   splitwise = {
-    "trip_id" : request.body.trip_id,
+    "trip_id": request.body.trip_id,
     "total": request.body.total,
     "paid_by": request.body.paid_by,
     "splits": request.body.splits
   }
 
-  Splitwise.create(splitwise, function(err, result){
-    if(err){
+  Splitwise.create(splitwise, function (err, result) {
+    if (err) {
       response.status(400).send(err);
-    }else{
+    } else {
       response.render(result);
     }
   });
 
 };
 
-exports.addMessage = function(request, response){
-  Chat.findOne({"trip_id": request.body.trip_id}, function(err, chat_res) {
+exports.addMessage = function (request, response) {
+  Chat.findOne({ "trip_id": request.body.trip_id }, function (err, chat_res) {
     if (err) {
       response.status(500).send("Invalid trip id. Please select other trip.");
     } else {
-      mychat= {"user_email": request.session.userEmail, "message" : request.body.message};
+      mychat = { "user_email": request.session.userEmail, "message": request.body.message };
       // console.log("YOlo");
-      if(chat_res){
+      if (chat_res) {
         // console.log("Yo!");
         chat_res.chat.push(mychat);
-        chat_res.save(function(err){
-          if(err){
+        chat_res.save(function (err) {
+          if (err) {
             response.render('404');
-          }else{
+          } else {
             // console.log("Harsha");
-            response.render('chat_app', {"id": chat_res.trip_id});
+            response.render('chat_app', { "id": chat_res.trip_id });
           }
         });
-      } else{
-        new_chat = {"trip_id":request.body.trip_id, "chat": [mychat]};
-        Chat.create(new_chat, function(err, result){
-          if(err){
+      } else {
+        new_chat = { "trip_id": request.body.trip_id, "chat": [mychat] };
+        Chat.create(new_chat, function (err, result) {
+          if (err) {
             response.status(400).send(err);
-          }else{
+          } else {
             // console.log("created chat "+result);
             response.render('chat_app');
           }
         });
       }
-  }
+    }
   });
 };
 
