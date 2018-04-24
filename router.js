@@ -78,12 +78,6 @@ module.exports = function(app) {
     }
   });
 
-  app.get('/splitwise/:id', function(req, res){
-    if(req.session && req.session.userId){
-      res.render('Splitwise', {id: req.params.id});
-    }
-  });
-
   app.get('/chat_app/:id', function(req, res){
     if(req.session && req.session.userId){
       res.render('chat_app', {id: req.params.id});
@@ -92,6 +86,12 @@ module.exports = function(app) {
       res.render('home');
     }
 
+  });
+
+  app.get('/splitwise/:id', function(req, res){
+    if(req.session && req.session.userId){
+      res.render('Splitwise', {id: req.params.id});
+    }
   });
 
   app.get('/splitwise_app/:id', function(req, res){
@@ -169,7 +169,6 @@ module.exports = function(app) {
   app.post('/joinPlan', PlanController.joinPlan);
   app.post('/rate_users', PlanController.rate_users);
   app.post('/add_feedback', PlanController.add_feedback);
-  app.post('/add_expenses', PlanController.addExpense);
   app.get('/get_plans', PlanController.getPlans);
   app.get('/get_trip_users/:id', PlanController.get_trip_users);
   app.get('/delete/:id', PlanController.deletePlan);
@@ -194,7 +193,7 @@ module.exports = function(app) {
   app.post('/createUser', UserController.createUser);
   app.post('/loginUser', UserController.loginUser);
   app.get('/profile_page', UserController.getProfile);
-
+  app.post('/add_splitwise',PlanController.addExpense);
 // routes related to chat
 //  app.post('/add_chat/:trip_id', PlanController.tripChat);
   app.post('/addChat/', PlanController.addMessage);
