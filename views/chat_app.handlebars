@@ -122,18 +122,18 @@
                     //$('#resultTable tbody> tr').remove();
                     let len = parsed_data.length;
                     console.log("length is ---------"+len);
-                    console.log(parsed_data[3].message);
+                    
                     
                     {{!-- for (chat in parsed_data){ --}}
                     for(var i = 0; i < len; i++) {
                         console.log(parsed_data[i].message);
                         let test;
-                    {{!-- if(1){//request.session.userEmail==parsed_data.chat.user_email){ --}}
+                    {{!-- if(1){request.session.userEmail==parsed_data.chat.user_email){ --}}
 test = "<div class='container12 darker' width='50%'><img src='/img/sender.jpg' alt='Avatar' class='right' style='width:50%'><p>"+parsed_data[i].user_email+"&nbsp:--&nbsp &nbsp &nbsp"+parsed_data[i].message+"</p></div>"
                     {{!-- }else{
 test = "<div class='container12' width='50%'><img src='/img/other.jpg' alt='Avatar' class='right' style='width:50%'><p class='time-left'>"+parsed_data[i].message+"</p></div>"
                     } --}}
-      {{!-- "<span class='time-left">11:01</span>" --}}
+      {{!-- "<span class='time-left'>11:01</span>" --}}
                             {{!-- test = "<label style='float:left'>  "+parsed_data[i].message +"</label>"; --}}
                            
  {{!-- if(request.session.userEmail==parsed_data.chat.user_email){
