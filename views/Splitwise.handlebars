@@ -33,7 +33,7 @@
                     var test = "<input type='hidden' name='trip_id' id='trip_id' value='{{id}}' >";
 
                     let paid_by = "Paid By : <input type='text' name='paid_by' value="+json_data.myEmail+" readonly > &nbsp &nbsp";
-                    let amount = "Amount in USD : <input type='number' min='0.00' max='10000.00' step='1.00' name='amount' id='amount' placeholder='enter amount in USD' ><br><br>"
+                    let amount = "Amount in USD : <input type='number' min='0.00' max='10000.00' step='1.00' name='amount' id='amount' placeholder='enter amount in USD' required><br><br>"
 
                     
                     $('#splitwise-form').append(test);
