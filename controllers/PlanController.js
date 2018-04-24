@@ -533,6 +533,21 @@ exports.addExpense = function (request, response) {
 
 };
 
+exports.fetch_splits = function (request, response){
+  console.log(request.body.trip_id);
+  Splitwise.findOne({"trip_id": request.body.trip_id}, function(err, split_res) {
+      if(err){
+        response.status(500).send("Invalid trip id. Please select other trip.");
+      } else {
+        if(split_res){
+          response.send(split_res);
+        } else{
+          response.status(400).send({no_data:"No data as of now"});
+        }
+      }
+  });
+}
+
 exports.addMessage = function (request, response) {
   Chat.findOne({ "trip_id": request.body.trip_id }, function (err, chat_res) {
     if (err) {
