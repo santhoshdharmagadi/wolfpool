@@ -78,6 +78,12 @@ module.exports = function(app) {
     }
   });
 
+  app.get('/splitwise/:id', function(req, res){
+    if(req.session && req.session.userId){
+      res.render('Splitwise', {id: req.params.id});
+    }
+  });
+
   app.get('/chat_app/:id', function(req, res){
     if(req.session && req.session.userId){
       res.render('chat_app', {id: req.params.id});
@@ -152,6 +158,7 @@ module.exports = function(app) {
   app.post('/joinPlan', PlanController.joinPlan);
   app.post('/rate_users', PlanController.rate_users);
   app.post('/add_feedback', PlanController.add_feedback);
+  app.post('/add_expenses', PlanController.addExpense);
   app.get('/get_plans', PlanController.getPlans);
   app.get('/get_trip_users/:id', PlanController.get_trip_users);
   app.get('/delete/:id', PlanController.deletePlan);
