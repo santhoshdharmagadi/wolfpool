@@ -116,14 +116,17 @@
             async: true,
             success: function (json_data) {
                 console.log(JSON.stringify(json_data));
-                var parsed_data = json_data.chat;
-                console.log(parsed_data[0].message);
+                var parsed_data = {};
+                if (json_data.chat !== undefined) {
+                    parsed_data = json_data.chat;
+                }
+                //console.log(parsed_data[0].message);
                 if ($.trim(parsed_data)) {
                     //$('#resultTable tbody> tr').remove();
                     let len = parsed_data.length;
-                    console.log("length is ---------"+len);
-                    console.log(parsed_data[3].message);
-                    
+                    // console.log("length is ---------"+len);
+                    // console.log(parsed_data[3].message);
+                    //
                     {{!-- for (chat in parsed_data){ --}}
                     for(var i = 0; i < len; i++) {
                         console.log(parsed_data[i].message);
