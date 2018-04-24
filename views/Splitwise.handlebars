@@ -30,10 +30,10 @@
                 if ($.trim(json_data)) {
                     //$('#resultTable tbody> tr').remove();
                     var len = json_data.length;
-                    var test = "<input type='hidden' name='id' value='{{id}}' >";
+                    var test = "<input type='hidden' name='trip_id' id='trip_id' value='{{id}}' >";
 
                     let paid_by = "Paid By : <input type='text' name='paid_by' value="+json_data.myEmail+" readonly > &nbsp &nbsp";
-                    let amount = "Amount in USD : <input type='number' min='0.00' max='10000.00' step='1.00' name='amount' placeholder='enter amount in USD' ><br><br>"
+                    let amount = "Amount in USD : <input type='number' min='0.00' max='10000.00' step='1.00' name='amount' id='amount' placeholder='enter amount in USD' ><br><br>"
 
                     
                     $('#splitwise-form').append(test);
@@ -45,7 +45,7 @@
                         if (json_data.plan.emails[i] != json_data.myEmail) {
                         checkbox_1 = "<div class='form-group'><center><label for='form-control'>"+
                             json_data.plan.emails[i]+
-                            "</label><input type='checkbox' class='form-control' id='checkbox_"+i+"' name='checkbox_"+i+"' ></center></div>";
+                            "</label><input type='checkbox' class='form-control' id='"+json_data.plan.emails[i]+"' name='"+json_data.plan.emails[i]+"' ></center></div>";
                         
                         $('#splitwise-form').append(checkbox_1);
                         $('#splitwise-form').append('<br/>');
