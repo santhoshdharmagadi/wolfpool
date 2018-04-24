@@ -4,6 +4,7 @@ var Plan = require('../models/plan');
 var Rating = require('../models/rating');
 var Feedback = require('../models/feedback');
 let Chat = require('../models/chat');
+var Splitwise = require('../models/Splitwise');
 
 var checker = 0;
 
@@ -487,6 +488,24 @@ exports.tripChat = function(request, response){
   });
 };
 
+exports.addExpense = function(request, response){
+  splitwise = {
+    "trip_id" : request.body.trip_id,
+    "total": request.body.total,
+    "paid_by": request.body.paid_by,
+    "splits": request.body.splits
+  }
+
+  Splitwise.create(splitwise, function(err, result){
+    if(err){
+      response.status(400).send(err);
+    }else{
+      response.render(result);
+    }
+  });
+
+};
+
 exports.addMessage = function(request, response){
   Chat.findOne({"trip_id": request.body.trip_id}, function(err, chat_res) {
     if (err) {
@@ -561,3 +580,4 @@ exports.addMessage = function(request, response){
     // });
 
 // };
+
