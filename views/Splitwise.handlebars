@@ -13,7 +13,7 @@
   </div>  
 
   <div id="splits">
-      <p id="payer">Paid by :</p><p id="amount_paid">Amount in USD</p><p id="people_involved">People Involved: </p>
+      <p id="payer">Paid by : </p><p id="amount_paid">Amount in USD : </p><p id="people_involved">People Involved: </p>
       <table style="margin-top: 20px;" id="payeeList" class="table table-striped table-bordered table-dark table-condensed table-hover">
             <thead>
             <tr>
@@ -74,7 +74,7 @@
 
     $.ajax({
             type: "GET",
-            url: "/fetch_spils/{{id}}",
+            url: "/fetch_splits/{{id}}",
             async: true,
             success: function (json_data) {
 
@@ -82,9 +82,11 @@
                     var len = json_data.splits.length;
 
                     let new_row;
-                    $('payer').append(json_data.paid_by);
-                    $('amount_paid').append(json_data.total);
-                    $('payer').append(len);
+                    console.log(json_data);
+                    console.log(json_data.paid_by);
+                    $('#payer').append(json_data.paid_by);
+                    $('#amount_paid').append(json_data.total);
+                    $('#people_involved').append(len+1);
                     for(let i=0; i<len; i++){
                         new_row = "<tr>" +
                     "<td align='center'>" + json_data.splits[i].email + "</td>" +

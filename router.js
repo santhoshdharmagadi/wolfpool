@@ -171,6 +171,7 @@ module.exports = function(app) {
   app.post('/add_feedback', PlanController.add_feedback);
   app.get('/get_plans', PlanController.getPlans);
   app.get('/get_trip_users/:id', PlanController.get_trip_users);
+  app.get('/fetch_splits/:id', PlanController.fetch_splits);
   app.get('/delete/:id', PlanController.deletePlan);
   app.get('/edit/:id', PlanController.editPlan);
   app.get('/get_plan/:id', PlanController.get_plan);

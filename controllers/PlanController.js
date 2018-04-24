@@ -522,24 +522,25 @@ exports.addExpense = function (request, response) {
 
   splitwise.splits = splits;
   // response.send(splitwise);
-
-  Splitwise.create(splitwise, function (err, result) {
+  var sp = new Splitwise(splitwise);
+  sp.save(function (err) {
     if (err) {
       response.status(400).send(err);
     } else {
-      response.render('Splitwise', {id: request.body.trip_id, split: result});
+      response.render('Splitwise', {id: request.body.trip_id, split: splitwise});
     }
   });
 
 };
 
 exports.fetch_splits = function (request, response){
-  console.log(request.body.trip_id);
-  Splitwise.findOne({"trip_id": request.body.trip_id}, function(err, split_res) {
+  console.log(request.params.id);
+  Splitwise.findOne({"trip_id": request.params.id}, function(err, split_res) {
       if(err){
         response.status(500).send("Invalid trip id. Please select other trip.");
       } else {
         if(split_res){
+          console.log(split_res);
           response.send(split_res);
         } else{
           response.status(400).send({no_data:"No data as of now"});
