@@ -33,6 +33,18 @@
 			</div>
 
             <div class="form-group">
+                <label for="no_of_people_id">Gender of riders in the trip</label><br>
+                <input type="radio" name="gender" value="0" checked>Both<br>
+                <input type="radio" name="gender" value="1"> Only Male<br>
+                <input type="radio" name="gender" value="2"> Only Female
+            </div>
+
+            <div class="form-group">
+                <label for="luggage">Luggage</label>
+                <input type="number" class="form-control" id="no_of_people_id" min="0" max="4" name="luggage">
+            </div>
+
+            <div class="form-group">
                 <label>Add additional options to search plan</label>
                 <input type="checkbox" id="additional-box" onclick="showSearchOptions()" value="searchOptions" name="searchOptions">
             </div>
