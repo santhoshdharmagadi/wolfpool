@@ -492,16 +492,42 @@ exports.tripChat = function (request, response) {
 exports.addExpense = function (request, response) {
   splitwise = {
     "trip_id": request.body.trip_id,
-    "total": request.body.total,
-    "paid_by": request.body.paid_by,
-    "splits": request.body.splits
+    "total": Number(request.body.amount),
+    "paid_by": request.body.paid_by
+    // "splits": request.body.splits
   }
+
+  var count = 1;
+  for (var key in request.body) {
+    // if (request.body.hasOwnProperty(key)) {
+        if(request.body[key] == 'on'){
+          // console.log(key + " -> " + request.body[key]);
+          count += 1;
+        }
+    // }
+  }
+
+  // console.log("Count : " + count);
+  // console.log(splitwise.total  +" / " + count + " = " + splitwise.total/count);
+  var individualSplit = splitwise.total/count;
+  var splits = [];
+  for(var key in request.body){
+    if(request.body[key] == 'on'){
+      splits.push({
+        email: key,
+        owes: individualSplit
+      });
+    }
+  }
+
+  splitwise.splits = splits;
+  // response.send(splitwise);
 
   Splitwise.create(splitwise, function (err, result) {
     if (err) {
       response.status(400).send(err);
     } else {
-      response.render(result);
+      response.render('Splitwise', {id: request.body.trip_id, split: result});
     }
   });
 
