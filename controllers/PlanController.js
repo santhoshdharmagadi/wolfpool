@@ -474,9 +474,9 @@ exports.tripChat = function(request, response){
     if (err) {
       response.status(500).send("Invalid trip id. Please select other trip.");
     } else {
-      console.log("fetched to chat ");
+      // console.log("fetched to chat ");
       if(chat_res){
-        console.log("chat pres");
+        // console.log("chat pres");
         console.log(chat_res);
         response.send(chat_res);
       }
@@ -493,22 +493,25 @@ exports.addMessage = function(request, response){
       response.status(500).send("Invalid trip id. Please select other trip.");
     } else {
       mychat= {"user_email": request.session.userEmail, "message" : request.body.message};
+      // console.log("YOlo");
       if(chat_res){
+        // console.log("Yo!");
         chat_res.chat.push(mychat);
         chat_res.save(function(err){
           if(err){
             response.render('404');
           }else{
-            response.render('chat_app');
+            // console.log("Harsha");
+            response.render('chat_app', {"id": chat_res.trip_id});
           }
         });
       } else{
-        new_chat = {"trip_id":request.body.trip_id, "chat": mychat};
+        new_chat = {"trip_id":request.body.trip_id, "chat": [mychat]};
         Chat.create(new_chat, function(err, result){
           if(err){
             response.status(400).send(err);
           }else{
-            console.log("created chat "+new_chat);
+            // console.log("created chat "+result);
             response.render('chat_app');
           }
         });
